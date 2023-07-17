@@ -14,6 +14,8 @@ namespace Chess {
         pawn, rook, bishop, queen, king, knight
     };
 
+    enum class PlayerRole;
+
     class Piece {
     private:
         const ChessPieceType m_chessPieceType;

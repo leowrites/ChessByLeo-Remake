@@ -4,9 +4,11 @@
 
 #include "Game.h"
 
+#include <utility>
+
 Chess::Game::Game(Chess::GameState gameState, Chess::Board board, GameConfiguration gameConfiguration,
-                  Chess::Players players)
-                  : m_gameState { gameState }, m_board { board }, m_currentPlayer { PlayerRole:: White }
-{
+                  const Chess::Players& players, Players mPlayers)
+                  : m_gameState { gameState }, m_board { board }, m_currentPlayer { PlayerRole:: White },
+                    m_players(std::move(mPlayers)) {
 
 }

@@ -13,7 +13,7 @@ namespace Chess
 {
     enum class GameState
     {
-        Loading, Home, Initialization, InGame, Paused, GameOver, Statistics
+        Loading, Home, Configuration, InGame, Paused, GameOver, Statistics
     };
 
     using Players = std::pair<Player, Player>;
@@ -33,7 +33,7 @@ namespace Chess
         double m_timeSinceLastMove{ };
 
     public:
-        Game(GameState gameState, Board board, GameConfiguration gameConfiguration,
-             Players players);
+        Game(Chess::GameState gameState, Chess::Board board, GameConfiguration gameConfiguration,
+             const Chess::Players& players, Players mPlayers);
     };
 }
