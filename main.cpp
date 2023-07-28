@@ -2,20 +2,23 @@
 // Created by Siqi Liu on 2023-07-13.
 //
 
-#include <iostream>
+#define RAYGUI_IMPLEMENTATION
 #include "raylib.h"
+#include "raygui.h"
 #include "entity/Game.h"
 #include "view/HomeView.h"
 #include "view/LoadingView.h"
 #include "view/GameConfigView.h"
+#include "view/InGameView.h"
 
 int main()
 {
-    std::cout << "Hello World" << std::endl;
     const int screenWidth{ 800 };
     const int screenHeight{ 800 };
     Vector2 mousePosition;
     Chess::GameState currGameState { Chess::GameState::Home };
+    Chess::GameConfiguration gameConfiguration {};
+    std::shared_ptr<Chess::Game> gamePtr { nullptr };
     InitWindow(screenWidth, screenHeight, "Chess By Leo V2");
     SetTargetFPS(60);
 
@@ -26,16 +29,23 @@ int main()
         ClearBackground(RAYWHITE);
         switch (currGameState)
         {
+            // skipping Loading View for now to get to the game
             case Chess::GameState::Loading:
                 Chess::LoadingView::Render(screenWidth, screenHeight);
+                // initialize the game
+                Chess::LoadingView::InitializeGame(gamePtr, gameConfiguration);
+                Chess::LoadingView::Update(currGameState);
                 break;
             case Chess::GameState::Home:
                 Chess::HomeView::Render(screenWidth, screenHeight, mousePosition);
-                Chess::HomeView::HandleMouseClick(mousePosition, currGameState);
+                Chess::HomeView::Update(mousePosition, currGameState);
                 break;
             case Chess::GameState::Configuration:
+                Chess::GameConfigView::Render();
+                Chess::GameConfigView::Update(mousePosition, gameConfiguration, currGameState);
                 break;
             case Chess::GameState::InGame:
+                Chess::InGameView::Render(screenWidth, screenHeight, gamePtr);
                 break;
             case Chess::GameState::Paused:
                 break;

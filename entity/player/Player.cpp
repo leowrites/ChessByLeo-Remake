@@ -3,3 +3,18 @@
 //
 
 #include "Player.h"
+
+
+namespace Chess
+{
+    Player::Player(Chess::PlayerRole playerRole): m_playerRole(playerRole)
+    {
+        // initialize the pieces
+    }
+
+    // default initialize player role to white
+    Player::Player(): m_playerRole { PlayerRole::White }
+    {
+
+    }
+}

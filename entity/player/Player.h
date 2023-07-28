@@ -21,11 +21,12 @@ namespace Chess
 
     class Player {
     private:
-        const PlayerRole m_playerRole;
+        PlayerRole m_playerRole;
         std::array<std::shared_ptr<Piece>, MAX_PLAYER_CHESS_PIECES> m_playerPieces;
         std::shared_ptr<Piece> m_playerSelectedPiece;
     public:
-        explicit Player(PlayerRole playerRole)
-               : m_playerRole { playerRole }, m_playerPieces { }, m_playerSelectedPiece { } { };
+        Player();
+        explicit Player(PlayerRole playerRole);
+        void UpdatePlayerRole(PlayerRole playerRole) { m_playerRole = playerRole; };
     };
 }
