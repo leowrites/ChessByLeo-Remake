@@ -16,6 +16,6 @@ namespace Chess
 
     public:
         static void Render(int screenWidth, int screenHeight, Vector2& mousePosition);
-        static void HandleMouseClick(Vector2& mousePos, GameState& gameState);
+        static void Update(Vector2& mousePos, GameState& gameState);
     };
 }

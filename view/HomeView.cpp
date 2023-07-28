@@ -47,7 +47,7 @@ namespace Chess
         }
     }
 
-    void HomeView::HandleMouseClick(Vector2& mousePos, GameState& gameState) {
+    void HomeView::Update(Vector2& mousePos, GameState& gameState) {
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
         {
             auto it = std::find_if(std::begin(s_menuOptionToRectangle), std::end(s_menuOptionToRectangle),
