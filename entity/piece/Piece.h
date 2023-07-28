@@ -21,9 +21,15 @@ namespace Chess {
         const ChessPieceType m_chessPieceType;
         const PlayerRole m_pieceOwner;
         const std::string_view m_pathToSprite;
-        const Image m_chessSprite;
         Position m_chessPosition;
+        std::shared_ptr<Texture> m_chessImage;
+    protected:
+        Piece(ChessPieceType chessPieceType, PlayerRole playerRole, std::string_view imagePath);
     public:
-        Piece() = delete;
+        virtual void Render() = 0;
+        static std::shared_ptr<Texture> LoadTextureFromString(std::string_view);
+        std::shared_ptr<Texture> GetTexture() { return m_chessImage; };
+        virtual std::string_view GetPieceName() = 0;
+        virtual ~Piece() = default;
     };
 }
