@@ -4,11 +4,18 @@
 
 #include "Game.h"
 
-#include <utility>
+namespace Chess
+{
+    Game::Game()
+    {
+        // update one of the player to black
+        m_players.second.UpdatePlayerRole(PlayerRole::Black);
+    }
 
-Chess::Game::Game(Chess::GameState gameState, Chess::Board board, GameConfiguration gameConfiguration,
-                  const Chess::Players& players, Players mPlayers)
-                  : m_gameState { gameState }, m_board { board }, m_currentPlayer { PlayerRole:: White },
-                    m_players(std::move(mPlayers)) {
+    Game::Game(GameConfiguration &gameConfiguration, PlayerRole currentPlayer)
+    : m_currentPlayer { currentPlayer }, m_gameConfiguration { gameConfiguration },
+     m_players { Player{PlayerRole::White}, Player { PlayerRole::Black } }
+     {
 
+    };
 }
