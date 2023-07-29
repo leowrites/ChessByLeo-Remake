@@ -17,6 +17,6 @@ namespace Chess
         MoveValidator() = default;
     public:
         virtual bool validate(GridPos& start, GridPos& end, PlayerRole playerRole, Board& board) = 0;
-        virtual ~MoveValidator() = 0;
+        virtual ~MoveValidator() = default;
     };
 }
