@@ -7,6 +7,7 @@
 #include <array>
 #include "entity/piece/Piece.h"
 #include "entity/piece/Pawn.h"
+#include "texture/asset.h"
 
 namespace Chess
 {
@@ -17,11 +18,11 @@ namespace Chess
         // pieces/squares/integer
         // there may not be needs for squares
         BoardMatrix m_board { nullptr };
-        // render: render black/white depending on square row/col
-        //          render a piece if Piece is not null
-        // update:
+        void InitializeChessPieces(PlayerRole playerRole);
     public:
         Board();
         BoardMatrix GetBoardMatrix() { return m_board; };
+        void UpdatePiecePositionInBoard(std::shared_ptr<Piece>& piece, std::unique_ptr<std::pair<uint8_t, uint8_t>>& newPos
+        , std::unique_ptr<std::pair<uint8_t, uint8_t>>& oldPos);
     };
 }

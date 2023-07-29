@@ -30,10 +30,13 @@ namespace Chess
         // if time since last move > configuration time, player has run out of time
         std::time_t m_timeSinceLastMove{ };
         // initialize players
+        std::shared_ptr<Piece> m_currentlySelectedPiece { nullptr };
 
     public:
         Game();
         explicit Game(GameConfiguration& gameConfiguration, PlayerRole currentPlayer=PlayerRole::White);
-        Board& GetBoard() { return m_board; }
+        Board& GetBoard() { return m_board; };
+        void UpdateCurrentlySelectedPiece(std::shared_ptr<Piece>);
+        std::shared_ptr<Piece> GetCurrentlySelectedPiece();
     };
 }

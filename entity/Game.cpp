@@ -4,6 +4,8 @@
 
 #include "Game.h"
 
+#include <utility>
+
 namespace Chess
 {
     Game::Game()
@@ -17,5 +19,14 @@ namespace Chess
      m_players { Player{PlayerRole::White}, Player { PlayerRole::Black } }
      {
 
+    }
+
+    void Game::UpdateCurrentlySelectedPiece(std::shared_ptr <Piece> piece) {
+        // this may be a problem if the old piece still needs it
+        m_currentlySelectedPiece = std::move(piece);
+    }
+
+    std::shared_ptr <Piece> Game::GetCurrentlySelectedPiece() {
+        return m_currentlySelectedPiece;
     };
 }

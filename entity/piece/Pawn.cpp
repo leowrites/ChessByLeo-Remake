@@ -6,8 +6,9 @@
 
 namespace Chess
 {
-    Pawn::Pawn(ChessPieceType chessPieceType, PlayerRole playerRole, const std::string_view &imagePath)
-    : Piece(chessPieceType, playerRole, imagePath)
+    Pawn::Pawn(ChessPieceType chessPieceType, PlayerRole playerRole, const std::string_view& unselectedPath,
+               const std::string_view& selectedPath, Vector2& initialPosition)
+    : Piece(chessPieceType, playerRole, unselectedPath, selectedPath, initialPosition)
     {
 
     }
