@@ -5,9 +5,7 @@
 #pragma once
 #include <iostream>
 #include <raylib.h>
-#include "../player/Player.h"
 #include <string_view>
-//#include "utility/move_validators/Validators.h"
 
 namespace Chess {
     enum class ChessPieceType {

@@ -6,7 +6,7 @@
 
 #include "utility/utility.h"
 #include "entity/board/Board.h"
-#include "entity/player/Player.h"
+
 // Interface for a move validator
 namespace Chess
 {

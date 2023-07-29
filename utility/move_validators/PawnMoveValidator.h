@@ -6,7 +6,6 @@
 
 #include <iostream>
 #include "MoveValidator.h"
-#include "utility/utility.h"
 
 namespace Chess
 {

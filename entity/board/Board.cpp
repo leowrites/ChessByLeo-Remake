@@ -23,7 +23,7 @@ namespace Chess
             row = 0;
         }
 
-//        PawnMoveValidator pawnMoveValidator;
+        PawnMoveValidator pawnMoveValidator;
 
 
         for (uint8_t col{0}; col < 8; ++col) {

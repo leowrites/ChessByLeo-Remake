@@ -29,4 +29,8 @@ namespace Chess
                                                         HOME_MENU_OPTIONS::Stats,
                                                         HOME_MENU_OPTIONS::Quit};
     char* ToString(HOME_MENU_OPTIONS homeMenuOptions);
+    enum class PlayerRole
+    {
+        Black, White
+    };
 }
