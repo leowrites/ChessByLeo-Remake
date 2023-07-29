@@ -13,7 +13,8 @@ namespace Chess
     private:
     public:
         Pawn() = default;
-        Pawn(ChessPieceType chessPieceType, PlayerRole playerRole, const std::string_view &imagePath);
+        Pawn(ChessPieceType chessPieceType, PlayerRole playerRole, const std::string_view& unselectedPath,
+             const std::string_view& selectedPath, Vector2& initialPosition);
         std::string_view GetPieceName() override { return "Pawn"; };
         void Render() override {};
     };
