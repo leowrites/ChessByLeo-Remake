@@ -15,9 +15,9 @@ namespace Chess
     {
     public:
         static void Render(int screenWidth, int screenHeight, std::shared_ptr<Game>& game);
-        static void Update();
+        static void Update(const std::shared_ptr<Game>& game);
     private:
         static void DrawSquare(int screenWidth, int screenHeight, uint8_t row, uint8_t col);
-        static void DrawPiece(int screenWidth, int screenHeight, uint8_t row, uint8_t col, Piece *piece);
+        static void DrawPiece(int screenWidth, int screenHeight, Piece *piece, const std::shared_ptr<Game>& game);
     };
 }
