@@ -8,10 +8,16 @@
 
 namespace Chess
 {
-    Piece::Piece(ChessPieceType chessPieceType, PlayerRole playerRole, const std::string_view& unselectedPath,
-                 const std::string_view& selectedPath, Vector2& initialPosition):
+    Piece::Piece(ChessPieceType chessPieceType,
+                 PlayerRole playerRole,
+                 const std::string_view& unselectedPath,
+                 const std::string_view& selectedPath, Vector2& initialPosition
+//                 const std::shared_ptr<MoveValidator>& validator
+                 ):
     m_chessPieceType(chessPieceType), m_pieceOwner(playerRole)
+//    m_validator(validator)
     {
+        // pieces may share validators so use shared_ptr
         std::cout << std::filesystem::current_path();
         m_chessUnselected = LoadTextureFromString(unselectedPath);
         m_chessSelected = LoadTextureFromString(selectedPath);

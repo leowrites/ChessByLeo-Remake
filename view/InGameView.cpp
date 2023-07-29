@@ -6,7 +6,6 @@
 
 namespace Chess
 {
-    using GridPos = std::unique_ptr<std::pair<uint8_t, uint8_t>>;
     GridPos CalculateGridPosGivenCoord(int x, int y)
     {
         return std::make_unique<std::pair<uint8_t, uint8_t>>(
@@ -104,9 +103,16 @@ namespace Chess
         {
             // need to know if the piece is currently selected, if so, render selected texture
             if (gamePtr->GetCurrentlySelectedPiece().get() == piece)
-                DrawTextureEx(*(piece->GetSelectedTexture()), *piece->GetPosition(), 0.0f, 0.45f, WHITE);
+            {
+                Vector2 drawPos { GetMousePosition() };
+                drawPos.x -= 50;
+                drawPos.y -= 50;
+                DrawTextureEx(*(piece->GetSelectedTexture()), drawPos, 0.0f, 0.45f, WHITE);
+            }
             else
+            {
                 DrawTextureEx(*(piece->GetUnselectedTexture()), *piece->GetPosition(), 0.0f, 0.45f, WHITE);
+            }
         }
     }
 }

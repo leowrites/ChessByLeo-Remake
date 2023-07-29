@@ -3,6 +3,7 @@
 //
 
 #include "Board.h"
+#include "utility/move_validators/Validators.h"
 
 namespace Chess
 {
@@ -21,6 +22,9 @@ namespace Chess
             pawnDirection = 1;
             row = 0;
         }
+
+//        PawnMoveValidator pawnMoveValidator;
+
 
         for (uint8_t col{0}; col < 8; ++col) {
             position = {100.0f * col, 100.0f * row};
@@ -131,8 +135,7 @@ namespace Chess
         }
     }
 
-    void Board::UpdatePiecePositionInBoard(std::shared_ptr<Piece>& piece, std::unique_ptr<std::pair<uint8_t, uint8_t>>& newPos,
-                                           std::unique_ptr<std::pair<uint8_t, uint8_t>>& oldPos)
+    void Board::UpdatePiecePositionInBoard(std::shared_ptr<Piece>& piece, GridPos& newPos, GridPos& oldPos)
     {
         // use the piece's old position and set that to nullptr
         m_board[oldPos->second][oldPos->first] = nullptr;
