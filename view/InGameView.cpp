@@ -6,7 +6,8 @@
 
 namespace Chess
 {
-    std::unique_ptr<std::pair<uint8_t, uint8_t>> CalculateGridPosGivenCoord(int x, int y)
+    using GridPos = std::unique_ptr<std::pair<uint8_t, uint8_t>>;
+    GridPos CalculateGridPosGivenCoord(int x, int y)
     {
         return std::make_unique<std::pair<uint8_t, uint8_t>>(
                 x / SQUARE_PIXEL_SIZE % 8,
@@ -22,26 +23,35 @@ namespace Chess
             // each piece needs their own positions instead of relying on the index
             // map mouse position to row/col, get the piece and update the coordinates for that piece
             Vector2 mousePosition { GetMousePosition() };
-            currentlySelectedPiece->UpdatePosition(mousePosition.x - 50, mousePosition.y - 50);
+            currentlySelectedPiece->UpdatePosition(mousePosition.x, mousePosition.y);
         }
         else if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
         {
             Vector2 mousePosition = GetMousePosition();
-            std::unique_ptr<std::pair<uint8_t, uint8_t>> gridPos { std::move(CalculateGridPosGivenCoord(mousePosition.x, mousePosition.y)) };
+            GridPos gridPos { std::move(CalculateGridPosGivenCoord(mousePosition.x, mousePosition.y)) };
             // update selected piece
             game->UpdateCurrentlySelectedPiece(game->GetBoard().GetBoardMatrix().at(gridPos->second).at(gridPos->first));
+            // if clicked on is not null, update old position
+            if (game->GetCurrentlySelectedPiece() != nullptr)
+            {
+                game->GetCurrentlySelectedPiece()->UpdateOldPosition(mousePosition.x, mousePosition.y);
+            }
         } else if (currentlySelectedPiece != nullptr && IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
         {
             // perform validations here
 
             // correct position to a nearby square
-            std::unique_ptr<std::pair<uint8_t, uint8_t>> newGridPos = CalculateGridPosGivenCoord(
+            GridPos newGridPos { std::move(CalculateGridPosGivenCoord(
                     currentlySelectedPiece->GetPosition()->x,
                     currentlySelectedPiece->GetPosition()->y
-                    );
+                    ))};
+            GridPos oldGridPos { std::move(CalculateGridPosGivenCoord(
+                    currentlySelectedPiece->GetOldPosition()->x,
+                    currentlySelectedPiece->GetOldPosition()->y
+                    ))};
 
             currentlySelectedPiece->UpdatePosition(newGridPos->first *  SQUARE_PIXEL_SIZE, newGridPos->second * SQUARE_PIXEL_SIZE);
-            game->GetBoard().UpdatePiecePositionInBoard(currentlySelectedPiece, newGridPos);
+            game->GetBoard().UpdatePiecePositionInBoard(currentlySelectedPiece, newGridPos, oldGridPos);
             game->UpdateCurrentlySelectedPiece(nullptr);
         }
     }
@@ -66,7 +76,7 @@ namespace Chess
                 DrawPiece(screenWidth, screenHeight, piece, game);
             }
         }
-
+        // render currently selected last
     }
 
     void InGameView::DrawSquare(int screenWidth, int screenHeight, uint8_t row, uint8_t col)
@@ -78,8 +88,8 @@ namespace Chess
         // width = height = pixel per square
         Vector2 mousePos { GetMousePosition() };
         auto screenWidthFloat = static_cast<float>(screenWidth);
-        Rectangle square = { static_cast<float>(SQUARE_PIXEL_SIZE * row),
-                             static_cast<float>(SQUARE_PIXEL_SIZE * col),
+        Rectangle square = { static_cast<float>(SQUARE_PIXEL_SIZE * col),
+                             static_cast<float>(SQUARE_PIXEL_SIZE * row),
                              screenWidthFloat,
                              screenWidthFloat};
         if ((row + col) % 2 == 0) {

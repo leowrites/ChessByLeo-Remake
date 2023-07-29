@@ -16,6 +16,7 @@ namespace Chess
         m_chessUnselected = LoadTextureFromString(unselectedPath);
         m_chessSelected = LoadTextureFromString(selectedPath);
         m_chessPosition = std::make_unique<Vector2>(initialPosition);
+        m_oldPosition = std::make_unique<Vector2>(initialPosition);
     }
 
     std::shared_ptr<Texture> Piece::LoadTextureFromString(const std::string_view imagePath) {
@@ -25,5 +26,10 @@ namespace Chess
     void Piece::UpdatePosition(float x, float y) {
         m_chessPosition->x = x;
         m_chessPosition->y = y;
+    }
+
+    void Piece::UpdateOldPosition(float x, float y) {
+        m_oldPosition->x = x;
+        m_oldPosition->y = y;
     }
 }
