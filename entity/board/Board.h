@@ -6,7 +6,6 @@
 
 #include <array>
 #include "entity/piece/Piece.h"
-#include "entity/piece/Pawn.h"
 #include "texture/asset.h"
 #include "utility/utility.h"
 

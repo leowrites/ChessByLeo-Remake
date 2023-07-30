@@ -38,7 +38,7 @@ namespace Chess
             }
             else if (start->first == end->first && start->second - 1 == end->second)
             {
-                return !AbovePieceExists(end, playerRole, board);
+                return !AbovePieceExists(end, board);
             }
         }
         else
@@ -54,7 +54,7 @@ namespace Chess
             }
             else if (start->first == end->first && start->second + 1 == end->second)
             {
-                return !AbovePieceExists(end, playerRole, board);
+                return !AbovePieceExists(end, board);
             }
         }
 

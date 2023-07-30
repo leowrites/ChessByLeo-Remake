@@ -29,14 +29,14 @@ namespace Chess
                 case 7:
                     if (playerRole == PlayerRole::White)
                     {
-                        m_board[row][col] = std::make_shared<Pawn>(ChessPieceType::pawn, playerRole,
+                        m_board[row][col] = std::make_shared<Piece>(ChessPieceType::rook, playerRole,
                                                                    whiteRookUnselected,
                                                                    whiteRookSelected,
                                                                    position);
                     }
                     else
                     {
-                        m_board[row][col] = std::make_shared<Pawn>(ChessPieceType::pawn, playerRole,
+                        m_board[row][col] = std::make_shared<Piece>(ChessPieceType::rook, playerRole,
                                                                    blackRookUnselected,
                                                                    blackRookSelected,
                                                                    position);
@@ -46,14 +46,14 @@ namespace Chess
                 case 6:
                     if (playerRole == PlayerRole::White)
                     {
-                        m_board[row][col] = std::make_shared<Pawn>(ChessPieceType::pawn, playerRole,
+                        m_board[row][col] = std::make_shared<Piece>(ChessPieceType::knight, playerRole,
                                                                    whiteKnightUnselected,
                                                                    whiteKnightSelected,
                                                                    position);
                     }
                     else
                     {
-                        m_board[row][col] = std::make_shared<Pawn>(ChessPieceType::pawn, playerRole,
+                        m_board[row][col] = std::make_shared<Piece>(ChessPieceType::knight, playerRole,
                                                                    blackKnightUnselected,
                                                                    blackKnightSelected,
                                                                    position);
@@ -63,14 +63,14 @@ namespace Chess
                 case 5:
                     if (playerRole == PlayerRole::White)
                     {
-                        m_board[row][col] = std::make_shared<Pawn>(ChessPieceType::pawn, playerRole,
+                        m_board[row][col] = std::make_shared<Piece>(ChessPieceType::bishop, playerRole,
                                                                    whiteBishopUnselected,
                                                                    whiteBishopSelected,
                                                                    position);
                     }
                     else
                     {
-                        m_board[row][col] = std::make_shared<Pawn>(ChessPieceType::pawn, playerRole,
+                        m_board[row][col] = std::make_shared<Piece>(ChessPieceType::bishop, playerRole,
                                                                    blackBishopUnselected,
                                                                    blackBishopSelected,
                                                                    position);
@@ -79,14 +79,14 @@ namespace Chess
                 case 3:
                     if (playerRole == PlayerRole::White)
                     {
-                        m_board[row][col] = std::make_shared<Pawn>(ChessPieceType::pawn, playerRole,
+                        m_board[row][col] = std::make_shared<Piece>(ChessPieceType::king, playerRole,
                                                                    whiteKingUnselected,
                                                                    whiteKingSelected,
                                                                    position);
                     }
                     else
                     {
-                        m_board[row][col] = std::make_shared<Pawn>(ChessPieceType::pawn, playerRole,
+                        m_board[row][col] = std::make_shared<Piece>(ChessPieceType::king, playerRole,
                                                                    blackKingUnselected,
                                                                    blackKingSelected,
                                                                    position);
@@ -95,14 +95,14 @@ namespace Chess
                 case 4:
                     if (playerRole == PlayerRole::White)
                     {
-                        m_board[row][col] = std::make_shared<Pawn>(ChessPieceType::pawn, playerRole,
+                        m_board[row][col] = std::make_shared<Piece>(ChessPieceType::queen, playerRole,
                                                                    whiteQueenUnselected,
                                                                    whiteQueenSelected,
                                                                    position);
                     }
                     else
                     {
-                        m_board[row][col] = std::make_shared<Pawn>(ChessPieceType::pawn, playerRole,
+                        m_board[row][col] = std::make_shared<Piece>(ChessPieceType::queen, playerRole,
                                                                    blackQueenUnselected,
                                                                    blackQueenSelected,
                                                                    position);
@@ -115,14 +115,14 @@ namespace Chess
                 position = Vector2{100.0f * col, 100.0f * (row + pawnDirection)};
                 if (playerRole == PlayerRole::White)
                 {
-                    m_board[row + pawnDirection][col] = std::make_shared<Pawn>(ChessPieceType::pawn, playerRole,
+                    m_board[row + pawnDirection][col] = std::make_shared<Piece>(ChessPieceType::pawn, playerRole,
                                                                                whitePawnUnselected,
                                                                                whitePawnSelected,
                                                                                position);
                 }
                 else
                 {
-                    m_board[row + pawnDirection][col] = std::make_shared<Pawn>(ChessPieceType::pawn, playerRole,
+                    m_board[row + pawnDirection][col] = std::make_shared<Piece>(ChessPieceType::pawn, playerRole,
                                                                                blackPawnUnselected,
                                                                                blackPawnSelected,
                                                                                position);
