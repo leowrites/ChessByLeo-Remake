@@ -6,6 +6,10 @@
 
 #include "PawnMoveValidator.h"
 #include "KnightMoveValidator.h"
+#include "KingMoveValidator.h"
+#include "RookMoveValidator.h"
+#include "QueenMoveValidator.h"
+#include "BishopMoveValidator.h"
 #include "MoveValidator.h"
 #include "utility/utility.h"
 #include <iostream>

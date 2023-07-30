@@ -13,23 +13,17 @@ namespace Chess
             case ChessPieceType::pawn:
                 return std::make_unique<PawnMoveValidator>( PawnMoveValidator{} );
             case ChessPieceType::rook:
-                return nullptr;
-                break;
+                return std::make_unique<RookMoveValidator>(RookMoveValidator{} );
             case ChessPieceType::bishop:
-                return nullptr;
-                break;
+                return std::make_unique<BishopMoveValidator> ( BishopMoveValidator{} );
             case ChessPieceType::queen:
-                return nullptr;
-                break;
+                return std::make_unique<QueenMoveValidator> ( QueenMoveValidator{} );
             case ChessPieceType::king:
-                return nullptr;
-                break;
+                return std::make_unique<KingMoveValidator>( KingMoveValidator{} );
             case ChessPieceType::knight:
                 return std::make_unique<KnightMoveValidator>( KnightMoveValidator{} );
-                break;
             default:
                 return nullptr;
-                break;
         }
     }
 }

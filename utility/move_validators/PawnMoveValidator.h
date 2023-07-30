@@ -15,7 +15,7 @@ namespace Chess
         PawnMoveValidator() = default;
         bool validate(GridPosPtr& start, GridPosPtr& end, PlayerRole playerRole, Board& board) override;
         static bool DiagonalEnemyExists(GridPosPtr& end, PlayerRole playerRole, Board& board);
-        static bool AbovePieceExists(GridPosPtr& end, Board& board);
+        static bool AbovePieceExists(GridPosPtr& start, GridPosPtr& end, Board& board);
         ~PawnMoveValidator() override = default;
     };
 }
