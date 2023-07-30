@@ -7,7 +7,7 @@
 #include <iostream>
 #include "entity/Game.h"
 #include "utility/utility.h"
-
+#include "utility/move_validators/Validators.h"
 
 namespace Chess
 {

@@ -17,6 +17,14 @@ namespace Chess
                 return true;
             }
         }
+        else if (playerRole == PlayerRole::Black && start->second == 1)
+        {
+            if ((end->second == 2 || end->second == 3) && end->first == start->first)
+            {
+                std::cout << "Valid Move";
+                return true;
+            }
+        }
 
         return false;
     }

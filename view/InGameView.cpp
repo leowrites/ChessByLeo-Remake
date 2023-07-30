@@ -33,12 +33,13 @@ namespace Chess
             // if clicked on is not null, update old position
             if (game->GetCurrentlySelectedPiece() != nullptr)
             {
-                game->GetCurrentlySelectedPiece()->UpdateOldPosition(mousePosition.x, mousePosition.y);
+                game->GetCurrentlySelectedPiece()->UpdateOldPosition(gridPos->first % 8 * 100,
+                                                                     gridPos->second % 8 * 100);
             }
-        } else if (currentlySelectedPiece != nullptr && IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+        }
+        else if (currentlySelectedPiece != nullptr && IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
         {
             // perform validations here
-
             // correct position to a nearby square
             GridPos newGridPos { std::move(CalculateGridPosGivenCoord(
                     currentlySelectedPiece->GetPosition()->x,
@@ -49,9 +50,19 @@ namespace Chess
                     currentlySelectedPiece->GetOldPosition()->y
                     ))};
 
-            currentlySelectedPiece->UpdatePosition(newGridPos->first *  SQUARE_PIXEL_SIZE, newGridPos->second * SQUARE_PIXEL_SIZE);
-            game->GetBoard().UpdatePiecePositionInBoard(currentlySelectedPiece, newGridPos, oldGridPos);
-            game->UpdateCurrentlySelectedPiece(nullptr);
+            std::unique_ptr<MoveValidator> validator { GetValidatorByChessPieceType(currentlySelectedPiece->GetPieceType()) };
+            if (validator->validate(oldGridPos, newGridPos, currentlySelectedPiece->GetPieceOwner(), game->GetBoard()))
+            {
+                currentlySelectedPiece->UpdatePosition(newGridPos->first *  SQUARE_PIXEL_SIZE, newGridPos->second * SQUARE_PIXEL_SIZE);
+                game->GetBoard().UpdatePiecePositionInBoard(currentlySelectedPiece, newGridPos, oldGridPos);
+                game->UpdateCurrentlySelectedPiece(nullptr);
+            }
+            else
+            {
+                // reset to old position
+                currentlySelectedPiece->UpdatePosition(currentlySelectedPiece->GetOldPosition()->x, currentlySelectedPiece->GetOldPosition()->y);
+                game->UpdateCurrentlySelectedPiece(nullptr);
+            }
         }
     }
 

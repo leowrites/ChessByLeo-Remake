@@ -10,7 +10,6 @@
 // Interface for a move validator
 namespace Chess
 {
-    class Board;
     class MoveValidator
     {
     protected:

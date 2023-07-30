@@ -9,11 +9,8 @@ namespace Chess
     Pawn::Pawn(ChessPieceType chessPieceType, PlayerRole playerRole,
                const std::string_view& unselectedPath,
                const std::string_view& selectedPath, Vector2& initialPosition
-//               const std::shared_ptr<MoveValidator>& validator
                )
-    : Piece(chessPieceType, playerRole, unselectedPath, selectedPath, initialPosition
-//            validator
-            )
+    : Piece(chessPieceType, playerRole, unselectedPath, selectedPath, initialPosition)
     {
 
     }

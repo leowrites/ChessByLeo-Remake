@@ -3,7 +3,6 @@
 //
 
 #include "Board.h"
-#include "utility/move_validators/Validators.h"
 
 namespace Chess
 {
@@ -22,9 +21,6 @@ namespace Chess
             pawnDirection = 1;
             row = 0;
         }
-
-        PawnMoveValidator pawnMoveValidator;
-
 
         for (uint8_t col{0}; col < 8; ++col) {
             position = {100.0f * col, 100.0f * row};

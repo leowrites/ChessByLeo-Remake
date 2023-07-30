@@ -33,4 +33,7 @@ namespace Chess
     {
         Black, White
     };
+    enum class ChessPieceType {
+        pawn, rook, bishop, queen, king, knight
+    };
 }

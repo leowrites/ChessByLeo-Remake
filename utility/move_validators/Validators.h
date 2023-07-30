@@ -2,9 +2,17 @@
 // Created by Siqi Liu on 2023-07-29.
 //
 
-#ifndef CHESSBYLEO_REMAKE_VALIDATORS_H
-#define CHESSBYLEO_REMAKE_VALIDATORS_H
+#pragma once
 
 #include "PawnMoveValidator.h"
+#include "MoveValidator.h"
+#include "utility/utility.h"
+#include <iostream>
 
-#endif //CHESSBYLEO_REMAKE_VALIDATORS_H
+
+namespace Chess
+{
+    // don't like how this is allocated every time
+    std::unique_ptr<MoveValidator> GetValidatorByChessPieceType(ChessPieceType pieceType);
+}
+
