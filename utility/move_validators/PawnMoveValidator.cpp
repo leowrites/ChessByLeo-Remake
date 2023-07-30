@@ -6,23 +6,55 @@
 
 namespace Chess
 {
+    bool Chess::PawnMoveValidator::AbovePieceExists(Chess::GridPos &end, Chess::Board &board)
+    {
+        if (board.GetBoardMatrix()[end->second][end->first])
+            return true;
+        return false;
+    }
+    bool Chess::PawnMoveValidator::DiagonalEnemyExists(Chess::GridPos &end, Chess::PlayerRole playerRole,
+                                                       Chess::Board &board)
+    {
+        // player role is the role of the current player
+        // assume the end is valid for the current player (i.e. end is white piece moving up in a valid location)
+        std::shared_ptr<Piece> piece { board.GetBoardMatrix()[end->second][end->first] };
+        if (piece && piece->GetPieceOwner() != playerRole)
+            return true;
+        return false;
+    }
     bool Chess::PawnMoveValidator::validate(GridPos &start, GridPos &end, PlayerRole playerRole, Board& board) {
         // pawn can move one/two step forward if it hasn't been moved, it can move diagonal if there is an enemy piece
         // assume white is always on the bottom
-        if (playerRole == PlayerRole::White && start->second == 6)
+        if (playerRole == PlayerRole::White)
         {
-            if ((end->second == 5 || end->second == 4) && end->first == start->first)
+            if (start->second == 6 && ((end->second == 5 || end->second == 4) && end->first == start->first))
             {
-                std::cout << "Valid Move";
                 return true;
             }
-        }
-        else if (playerRole == PlayerRole::Black && start->second == 1)
-        {
-            if ((end->second == 2 || end->second == 3) && end->first == start->first)
+            else if ((end->first == start->first + 1 && end->second == start->second - 1)
+            || (end->first == start->first - 1 && end->second == start->second - 1))
             {
-                std::cout << "Valid Move";
+                return DiagonalEnemyExists(end, playerRole, board);
+            }
+            else if (start->first == end->first && start->second - 1 == end->second)
+            {
+                return !AbovePieceExists(end, playerRole, board);
+            }
+        }
+        else
+        {
+            if (start->second == 1 && ((end->second == 2 || end->second == 3) && end->first == start->first))
+            {
                 return true;
+            }
+            else if ((end->first == start->first - 1 && end->second == start->second + 1)
+                     || (end->first == start->first + 1 && end->second == start->second + 1))
+            {
+                return DiagonalEnemyExists(end, playerRole, board);
+            }
+            else if (start->first == end->first && start->second + 1 == end->second)
+            {
+                return !AbovePieceExists(end, playerRole, board);
             }
         }
 
