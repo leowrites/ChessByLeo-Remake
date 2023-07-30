@@ -131,7 +131,7 @@ namespace Chess
         }
     }
 
-    void Board::UpdatePiecePositionInBoard(std::shared_ptr<Piece>& piece, GridPos& newPos, GridPos& oldPos)
+    void Board::UpdatePiecePositionInBoard(std::shared_ptr<Piece>& piece, GridPosPtr& newPos, GridPosPtr& oldPos)
     {
         // use the piece's old position and set that to nullptr
         m_board[oldPos->second][oldPos->first] = nullptr;

@@ -22,6 +22,6 @@ namespace Chess
     public:
         Board();
         BoardMatrix GetBoardMatrix() { return m_board; };
-        void UpdatePiecePositionInBoard(std::shared_ptr<Piece>& piece, GridPos& newPos, GridPos& oldPos);
+        void UpdatePiecePositionInBoard(std::shared_ptr<Piece>& piece, GridPosPtr& newPos, GridPosPtr& oldPos);
     };
 }

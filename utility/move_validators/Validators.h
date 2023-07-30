@@ -5,6 +5,7 @@
 #pragma once
 
 #include "PawnMoveValidator.h"
+#include "KnightMoveValidator.h"
 #include "MoveValidator.h"
 #include "utility/utility.h"
 #include <iostream>

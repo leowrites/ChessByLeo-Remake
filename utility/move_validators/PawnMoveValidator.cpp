@@ -6,13 +6,13 @@
 
 namespace Chess
 {
-    bool Chess::PawnMoveValidator::AbovePieceExists(Chess::GridPos &end, Chess::Board &board)
+    bool Chess::PawnMoveValidator::AbovePieceExists(Chess::GridPosPtr &end, Chess::Board &board)
     {
         if (board.GetBoardMatrix()[end->second][end->first])
             return true;
         return false;
     }
-    bool Chess::PawnMoveValidator::DiagonalEnemyExists(Chess::GridPos &end, Chess::PlayerRole playerRole,
+    bool Chess::PawnMoveValidator::DiagonalEnemyExists(Chess::GridPosPtr &end, Chess::PlayerRole playerRole,
                                                        Chess::Board &board)
     {
         // player role is the role of the current player
@@ -22,7 +22,7 @@ namespace Chess
             return true;
         return false;
     }
-    bool Chess::PawnMoveValidator::validate(GridPos &start, GridPos &end, PlayerRole playerRole, Board& board) {
+    bool Chess::PawnMoveValidator::validate(GridPosPtr &start, GridPosPtr &end, PlayerRole playerRole, Board& board) {
         // pawn can move one/two step forward if it hasn't been moved, it can move diagonal if there is an enemy piece
         // assume white is always on the bottom
         if (playerRole == PlayerRole::White)
