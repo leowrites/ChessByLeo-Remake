@@ -5,17 +5,12 @@
 #pragma once
 
 #include <iostream>
-#include <utility>
+#include "utility/utility.h"
 #include "../piece/Piece.h"
 
 namespace Chess
 {
     const std::uint8_t MAX_PLAYER_CHESS_PIECES { 16 };
-
-    enum class PlayerRole
-    {
-        Black, White
-    };
 
     class Piece;
 

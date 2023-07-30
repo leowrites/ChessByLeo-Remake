@@ -9,6 +9,8 @@
 
 namespace Chess
 {
+    using GridPos = std::pair<uint8_t, uint8_t>;
+    using GridPosPtr = std::unique_ptr<GridPos>;
     constexpr int SCREEN_WIDTH { 800 };
     constexpr int SCREEN_HEIGHT { 800 };
     constexpr int SCREEN_PADDING_X { SCREEN_WIDTH / 16 };
@@ -28,4 +30,11 @@ namespace Chess
                                                         HOME_MENU_OPTIONS::Stats,
                                                         HOME_MENU_OPTIONS::Quit};
     char* ToString(HOME_MENU_OPTIONS homeMenuOptions);
+    enum class PlayerRole
+    {
+        Black, White
+    };
+    enum class ChessPieceType {
+        pawn, rook, bishop, queen, king, knight
+    };
 }
