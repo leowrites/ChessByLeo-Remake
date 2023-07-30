@@ -29,12 +29,17 @@ namespace Chess
             Vector2 mousePosition = GetMousePosition();
             GridPosPtr gridPos {std::move(CalculateGridPosGivenCoord(mousePosition.x, mousePosition.y)) };
             // update selected piece
-            game->UpdateCurrentlySelectedPiece(game->GetBoard().GetBoardMatrix().at(gridPos->second).at(gridPos->first));
             // if clicked on is not null, update old position
-            if (game->GetCurrentlySelectedPiece() != nullptr)
+            if (game->GetBoard().GetBoardMatrix().at(gridPos->second).at(gridPos->first) &&
+                    game->GetBoard().GetBoardMatrix().at(gridPos->second).at(gridPos->first)->GetPieceOwner() == game->GetCurrentPlayer())
             {
-                game->GetCurrentlySelectedPiece()->UpdateOldPosition(gridPos->first % 8 * 100,
-                                                                     gridPos->second % 8 * 100);
+                game->UpdateCurrentlySelectedPiece(game->GetBoard().GetBoardMatrix().at(gridPos->second).at(gridPos->first));
+                // only current player can be selected, check which player the piece belongs to
+                if (game->GetCurrentlySelectedPiece() != nullptr)
+                {
+                    game->GetCurrentlySelectedPiece()->UpdateOldPosition(gridPos->first % 8 * 100,
+                                                                         gridPos->second % 8 * 100);
+                }
             }
         }
         else if (currentlySelectedPiece != nullptr && IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
@@ -56,6 +61,8 @@ namespace Chess
                 currentlySelectedPiece->UpdatePosition(newGridPos->first *  SQUARE_PIXEL_SIZE, newGridPos->second * SQUARE_PIXEL_SIZE);
                 game->GetBoard().UpdatePiecePositionInBoard(currentlySelectedPiece, newGridPos, oldGridPos);
                 game->UpdateCurrentlySelectedPiece(nullptr);
+                // update current player to the other
+                game->UpdateCurrentPlayer(game->GetCurrentPlayer() == PlayerRole::Black ? PlayerRole::White : PlayerRole::Black);
             }
             else {
                 // reset to old position

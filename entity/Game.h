@@ -38,5 +38,7 @@ namespace Chess
         Board& GetBoard() { return m_board; };
         void UpdateCurrentlySelectedPiece(std::shared_ptr<Piece>);
         std::shared_ptr<Piece> GetCurrentlySelectedPiece();
+        PlayerRole GetCurrentPlayer() { return m_currentPlayer; };
+        void UpdateCurrentPlayer(PlayerRole playerRole) { m_currentPlayer = playerRole; };
     };
 }
