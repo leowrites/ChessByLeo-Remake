@@ -37,4 +37,5 @@ namespace Chess
     enum class ChessPieceType {
         pawn, rook, bishop, queen, king, knight
     };
+    GridPosPtr CalculateGridPosGivenCoord(int x, int y);
 }
