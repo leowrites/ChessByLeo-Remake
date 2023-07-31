@@ -14,9 +14,6 @@ namespace Chess
     using BoardMatrix = std::array<std::array<std::shared_ptr<Piece>, 8>, 8>;
     class Board {
     private:
-        // how to represent the chess board?
-        // pieces/squares/integer
-        // there may not be needs for squares
         BoardMatrix m_board { nullptr };
         void InitializeChessPieces(PlayerRole playerRole);
     public:

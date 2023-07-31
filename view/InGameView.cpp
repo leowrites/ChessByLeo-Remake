@@ -129,6 +129,10 @@ namespace Chess
                 drawPos.y -= 50;
                 DrawTextureEx(*(piece->GetSelectedTexture()), drawPos, 0.0f, 0.45f, WHITE);
             }
+            else if (piece->GetPieceType() == ChessPieceType::king)
+            {
+                DrawTextureEx(*(piece->GetInCheckTexture()), *piece->GetPosition(), 0.0f, 0.45f, WHITE);
+            }
             else
             {
                 DrawTextureEx(*(piece->GetUnselectedTexture()), *piece->GetPosition(), 0.0f, 0.45f, WHITE);

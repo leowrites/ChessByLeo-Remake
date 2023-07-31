@@ -37,6 +37,8 @@ namespace Chess
 
     constexpr string_view whiteKingUnselected { "../texture/whiteKingIcon.png" };
     constexpr string_view whiteKingSelected { "../texture/whiteKingSelected.png" };
+    constexpr string_view whiteKingInCheck { "../texture/whiteKingInCheck.png" };
     constexpr string_view blackKingUnselected { "../texture/blackKingIcon.png" };
     constexpr string_view blackKingSelected { "../texture/blackKingSelected.png" };
+    constexpr string_view blackKingInCheck { "../texture/blackKingInCheck.png" };
 }

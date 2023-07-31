@@ -36,4 +36,15 @@ namespace Chess
         m_oldPosition->x = x;
         m_oldPosition->y = y;
     }
+
+    Piece::Piece(ChessPieceType chessPieceType,
+                 PlayerRole playerRole,
+                 const std::string_view &unselectedPath,
+                 const std::string_view &selectedPath,
+                 Vector2 &initialPosition,
+                 const std::string_view &inCheckTexturePath)
+                 :Piece(chessPieceType, playerRole, unselectedPath, selectedPath, initialPosition)
+    {
+        m_inCheckTexture = std::move(std::make_unique<Texture>( LoadTexture(inCheckTexturePath.data())));
+    }
 }

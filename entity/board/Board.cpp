@@ -82,14 +82,16 @@ namespace Chess
                         m_board[row][col] = std::make_shared<Piece>(ChessPieceType::king, playerRole,
                                                                    whiteKingUnselected,
                                                                    whiteKingSelected,
-                                                                   position);
+                                                                   position,
+                                                                   whiteKingInCheck);
                     }
                     else
                     {
                         m_board[row][col] = std::make_shared<Piece>(ChessPieceType::king, playerRole,
                                                                    blackKingUnselected,
                                                                    blackKingSelected,
-                                                                   position);
+                                                                   position,
+                                                                   blackKingInCheck);
                     }
                     break;
                 case 4:
