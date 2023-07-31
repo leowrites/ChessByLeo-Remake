@@ -46,7 +46,7 @@ namespace Chess {
         ChessPieceType GetPieceType() { return m_chessPieceType; };
         std::string_view GetPieceName() { return ""; };
         bool& GetInCheck() { return m_isKingInCheck; };
-        void UpdateInCheck(bool& isKingInCheck) { m_isKingInCheck = isKingInCheck; };
+        void UpdateInCheck(bool isKingInCheck) { m_isKingInCheck = isKingInCheck; };
         void UpdatePosition(float x, float y);
         void UpdateOldPosition(float x, float y);
         ~Piece() = default;
