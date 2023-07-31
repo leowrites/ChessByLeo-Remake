@@ -8,6 +8,7 @@
 #include "entity/Game.h"
 #include "utility/utility.h"
 #include "utility/move_validators/Validators.h"
+#include "utility/check_validator/check_validator.h"
 
 namespace Chess
 {
