@@ -79,19 +79,21 @@ namespace Chess
                 case 3:
                     if (playerRole == PlayerRole::White)
                     {
-                        m_board[row][col] = std::make_shared<Piece>(ChessPieceType::king, playerRole,
+                        m_whiteKing = std::make_shared<Piece>(ChessPieceType::king, playerRole,
                                                                    whiteKingUnselected,
                                                                    whiteKingSelected,
                                                                    position,
                                                                    whiteKingInCheck);
+                        m_board[row][col] = m_whiteKing;
                     }
                     else
                     {
-                        m_board[row][col] = std::make_shared<Piece>(ChessPieceType::king, playerRole,
+                        m_blackKing = std::make_shared<Piece>(ChessPieceType::king, playerRole,
                                                                    blackKingUnselected,
                                                                    blackKingSelected,
                                                                    position,
                                                                    blackKingInCheck);
+                        m_board[row][col] = m_blackKing;
                     }
                     break;
                 case 4:
