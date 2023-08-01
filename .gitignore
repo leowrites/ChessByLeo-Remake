@@ -30,3 +30,16 @@
 *.exe
 *.out
 *.app
+
+build
+cmake-build-debug
+cmake-build-release
+CMakeFiles
+CMakeScripts
+_deps
+.idea
+.vscode
+Debug
+CPackConfig.cmake
+CPackSourceConfig.cmake
+.DS_Store

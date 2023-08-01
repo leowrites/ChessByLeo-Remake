@@ -33,6 +33,7 @@ namespace Chess
                                                                    whiteRookUnselected,
                                                                    whiteRookSelected,
                                                                    position);
+                        m_whiteRooks.insert(m_board[row][col]);
                     }
                     else
                     {
@@ -40,6 +41,7 @@ namespace Chess
                                                                    blackRookUnselected,
                                                                    blackRookSelected,
                                                                    position);
+                        m_blackRooks.insert(m_board[row][col]); 
                     }
                     break;
                 case 1:
@@ -67,6 +69,7 @@ namespace Chess
                                                                    whiteBishopUnselected,
                                                                    whiteBishopSelected,
                                                                    position);
+                        m_whiteBishop.insert(m_board[row][col]);
                     }
                     else
                     {
@@ -74,22 +77,27 @@ namespace Chess
                                                                    blackBishopUnselected,
                                                                    blackBishopSelected,
                                                                    position);
+                        m_blackBishop.insert(m_board[row][col]);
                     }
                     break;
                 case 3:
                     if (playerRole == PlayerRole::White)
                     {
-                        m_board[row][col] = std::make_shared<Piece>(ChessPieceType::king, playerRole,
+                        m_whiteKing = std::make_shared<Piece>(ChessPieceType::king, playerRole,
                                                                    whiteKingUnselected,
                                                                    whiteKingSelected,
-                                                                   position);
+                                                                   position,
+                                                                   whiteKingInCheck);
+                        m_board[row][col] = m_whiteKing;
                     }
                     else
                     {
-                        m_board[row][col] = std::make_shared<Piece>(ChessPieceType::king, playerRole,
+                        m_blackKing = std::make_shared<Piece>(ChessPieceType::king, playerRole,
                                                                    blackKingUnselected,
                                                                    blackKingSelected,
-                                                                   position);
+                                                                   position,
+                                                                   blackKingInCheck);
+                        m_board[row][col] = m_blackKing;
                     }
                     break;
                 case 4:
@@ -99,6 +107,7 @@ namespace Chess
                                                                    whiteQueenUnselected,
                                                                    whiteQueenSelected,
                                                                    position);
+                        m_whiteQueen.insert(m_board[row][col]);
                     }
                     else
                     {
@@ -106,6 +115,7 @@ namespace Chess
                                                                    blackQueenUnselected,
                                                                    blackQueenSelected,
                                                                    position);
+                        m_blackQueen.insert(m_board[row][col]);
                     }
                     break;
                 default:

@@ -22,7 +22,7 @@ namespace Chess
                 GridPos {start->first + 2, start->second - 1}
         };
         GridPos endPos { *end.get() };
-        auto isSameGrid = [endPos](GridPos pos)
+        auto isSameGrid = [endPos](GridPos& pos)
         {
             return endPos.first == pos.first && endPos.second == pos.second;
         };

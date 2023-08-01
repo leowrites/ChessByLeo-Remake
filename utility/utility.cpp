@@ -11,4 +11,11 @@ namespace Chess
         const char* MENU_OPTIONS[] { "Single Player", "Against Computer", "Stats", "Quit" };
         return const_cast<char *>(MENU_OPTIONS[static_cast<int>(homeMenuOptions)]);
     }
+    GridPosPtr CalculateGridPosGivenCoord(int x, int y)
+    {
+        return std::make_unique<std::pair<uint8_t, uint8_t>>(
+                x / SQUARE_PIXEL_SIZE % 8,
+                y / SQUARE_PIXEL_SIZE % 8
+                );
+    }
 }
