@@ -8,14 +8,14 @@ namespace Chess {
         // 1. check if rook is on the same line
         // 2. check if there are pieces between them
         if (rookPos->first == kingPos->first)
-            return !PieceInBetweenVertical(kingPos, rookPos, board);
+            return !PieceInBetweenHorizontal(kingPos, rookPos, board);
         return false;
     }
     bool IsKingInCheckVertical(GridPosPtr &kingPos, Board& board, const std::shared_ptr<Piece>& pieces)
     {
         GridPosPtr rookPos { CalculateGridPosGivenCoord(pieces->GetPosition()->x, pieces->GetPosition()->y) };
         if (rookPos->second == kingPos->second)
-            return !PieceInBetweenHorizontal(kingPos, rookPos, board);
+            return !PieceInBetweenVertical(kingPos, rookPos, board);
         return false;
     }
     bool IsKingInCheckDiagonal(GridPosPtr &kingPos, Board& board, const std::shared_ptr<Piece>& pieces)
