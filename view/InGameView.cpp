@@ -18,16 +18,16 @@ namespace Chess {
             GridPosPtr gridPos{std::move(CalculateGridPosGivenCoord(mousePosition.x, mousePosition.y))};
             // update selected piece
             // if clicked on is not null, update old position
-            if (game->GetBoard().GetBoardMatrix().at(gridPos->second).at(gridPos->first) &&
-                game->GetBoard().GetBoardMatrix().at(gridPos->second).at(gridPos->first)->GetPieceOwner() ==
-                game->GetCurrentPlayer()) {
+//            if (game->GetBoard().GetBoardMatrix().at(gridPos->second).at(gridPos->first) &&
+//                game->GetBoard().GetBoardMatrix().at(gridPos->second).at(gridPos->first)->GetPieceOwner() ==
+//                game->GetCurrentPlayer()) {
                 game->UpdateCurrentlySelectedPiece(
                         game->GetBoard().GetBoardMatrix().at(gridPos->second).at(gridPos->first));
                 // only current player can be selected, check which player the piece belongs to
                 if (game->GetCurrentlySelectedPiece() != nullptr) {
                     game->GetCurrentlySelectedPiece()->UpdateOldPosition(gridPos->first % 8 * 100,
                                                                          gridPos->second % 8 * 100);
-                }
+//                }
             }
         } else if (currentlySelectedPiece != nullptr && IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
             // perform validations here

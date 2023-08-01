@@ -2,25 +2,51 @@
 
 
 namespace Chess {
+    bool IsKingInCheckHorizontal(GridPosPtr &kingPos, Board& board, const std::shared_ptr<Piece>& pieces)
+    {
+        GridPosPtr rookPos { CalculateGridPosGivenCoord(pieces->GetPosition()->x, pieces->GetPosition()->y) };
+        // 1. check if rook is on the same line
+        // 2. check if there are pieces between them
+        if (rookPos->first == kingPos->first)
+            return !PieceInBetweenVertical(kingPos, rookPos, board);
+        return false;
+    }
+    bool IsKingInCheckVertical(GridPosPtr &kingPos, Board& board, const std::shared_ptr<Piece>& pieces)
+    {
+        GridPosPtr rookPos { CalculateGridPosGivenCoord(pieces->GetPosition()->x, pieces->GetPosition()->y) };
+        if (rookPos->second == kingPos->second)
+            return !PieceInBetweenHorizontal(kingPos, rookPos, board);
+        return false;
+    }
+    bool IsKingInCheckDiagonal(GridPosPtr &kingPos, Board& board, const std::shared_ptr<Piece>& pieces)
+    {
+        GridPosPtr bishopPos { CalculateGridPosGivenCoord(pieces->GetPosition()->x, pieces->GetPosition()->y) };
+        int diffX { bishopPos->first - kingPos->first };
+        int diffY { bishopPos->second - kingPos->second};
+        if (abs(diffX) != abs(diffY))
+            return false;
+        return !PieceInBetweenDiagonal(kingPos, bishopPos, board, diffX > 0 ? 1 : -1, diffY > 0 ? 1 : -1);
+    }
     bool IsKingInCheckByQueen(PlayerRole playerRole, GridPosPtr &kingPos, Board &board) {
-        return IsKingInCheckByRook(playerRole, kingPos, board) || IsKingInCheckByBishop(playerRole, kingPos, board);
+        // note: it's possible to have more than 1 queen
+        const std::unordered_set<std::shared_ptr<Piece>>& queens { playerRole == PlayerRole::White ? board.GetBlackQueen() : board.GetWhiteQueen() };
+        for (auto& queen: queens)
+        {
+            if (IsKingInCheckDiagonal(kingPos, board, queen) || IsKingInCheckVertical(kingPos, board, queen) ||
+                    IsKingInCheckHorizontal(kingPos, board, queen))
+                return true;
+        }
+        return false;
     }
 
     bool IsKingInCheckByRook(PlayerRole playerRole, GridPosPtr &kingPos, Board &board) {
         const std::unordered_set<std::shared_ptr<Piece>>& rooks {
             playerRole == PlayerRole::White ? board.GetBlackRooks() : board.GetWhiteRooks()};
-        auto rookOnTheLine = [&](const std::shared_ptr<Piece>& rook) {
-            GridPosPtr rookPos { CalculateGridPosGivenCoord(rook->GetPosition()->x, rook->GetPosition()->y) };
-            // 1. check if rook is on the same line
-            // 2. check if there are pieces between them
-            if (rookPos->first == kingPos->first)
-               return ! PieceInBetweenVertical(kingPos, rookPos, board);
-            else if (rookPos->second == kingPos->second)
-               return !PieceInBetweenHorizontal(kingPos, rookPos, board);
-            return false;
-        };
-        if (std::ranges::any_of(rooks, rookOnTheLine))
-            return true;
+        for (const std::shared_ptr<Piece>& rook: rooks)
+        {
+            if (IsKingInCheckHorizontal(kingPos, board, rook) ||IsKingInCheckVertical(kingPos, board, rook))
+                return true;
+        }
         return false;
     }
 
@@ -48,16 +74,11 @@ namespace Chess {
     bool IsKingInCheckByBishop(PlayerRole playerRole, GridPosPtr &kingPos, Board &board) {
         const std::unordered_set<std::shared_ptr<Piece>>& bishops {
                 playerRole == PlayerRole::White ? board.GetBlackBishop() : board.GetWhiteBishop()};
-        auto bishopInDiagonal = [&](const std::shared_ptr<Piece>& bishop) {
-            GridPosPtr bishopPos { CalculateGridPosGivenCoord(bishop->GetPosition()->x, bishop->GetPosition()->y) };
-            int diffX { bishopPos->first - kingPos->first };
-            int diffY { bishopPos->second - kingPos->second};
-            if (abs(diffX) != abs(diffY))
-                return false;
-            return !PieceInBetweenDiagonal(kingPos, bishopPos, board, diffX > 0 ? 1 : -1, diffY > 0 ? 1 : -1);
-        };
-        if (std::ranges::any_of(bishops, bishopInDiagonal))
-            return true;
+        for (auto& bishop: bishops)
+        {
+            if (IsKingInCheckDiagonal(kingPos, board, bishop))
+                return true;
+        }
         return false;
     }
 

@@ -22,4 +22,7 @@ namespace Chess
     bool IsKingInCheckByQueen(PlayerRole playerRole, GridPosPtr &kingPos, Board &board);
     bool IsKingInCheckByBishop(PlayerRole playerRole, GridPosPtr &kingPos, Board &board);
     bool IsKingInCheckByKnight(PlayerRole playerRole, GridPosPtr &kingPos, Board& board);
+    bool IsKingInCheckHorizontal(GridPosPtr &kingPos, Board& board, const std::shared_ptr<Piece>& pieces);
+    bool IsKingInCheckVertical(GridPosPtr &kingPos, Board& board, const std::shared_ptr<Piece>& pieces);
+    bool IsKingInCheckDiagonal(GridPosPtr &kingPos, Board& board, const std::shared_ptr<Piece>& pieces);
 }
