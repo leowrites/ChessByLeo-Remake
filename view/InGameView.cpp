@@ -53,10 +53,10 @@ namespace Chess {
                 game->UpdateCurrentPlayer(
                         game->GetCurrentPlayer() == PlayerRole::Black ? PlayerRole::White : PlayerRole::Black);
                 // after a move is made, check if the other player is now being checked
-                std::shared_ptr<Piece> &whiteKing{game->GetBoard().GetWhiteKing()};
+                const std::shared_ptr<Piece> &whiteKing{game->GetBoard().GetWhiteKing()};
                 whiteKing->UpdateInCheck(IsKingInCheck(PlayerRole::White, (Game &) game, game->GetBoard()));
 
-                std::shared_ptr<Piece> &blackKing{game->GetBoard().GetBlackKing()};
+                const std::shared_ptr<Piece> &blackKing{game->GetBoard().GetBlackKing()};
                 blackKing->UpdateInCheck(IsKingInCheck(PlayerRole::Black, (Game &) game, game->GetBoard()));
             } else {
                 // reset to old position

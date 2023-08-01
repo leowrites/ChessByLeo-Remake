@@ -33,6 +33,7 @@ namespace Chess
                                                                    whiteRookUnselected,
                                                                    whiteRookSelected,
                                                                    position);
+                        m_whiteRooks.insert(m_board[row][col]);
                     }
                     else
                     {
@@ -40,6 +41,7 @@ namespace Chess
                                                                    blackRookUnselected,
                                                                    blackRookSelected,
                                                                    position);
+                        m_blackRooks.insert(m_board[row][col]); 
                     }
                     break;
                 case 1:
@@ -67,6 +69,7 @@ namespace Chess
                                                                    whiteBishopUnselected,
                                                                    whiteBishopSelected,
                                                                    position);
+                        m_whiteBishop.insert(m_board[row][col]);
                     }
                     else
                     {
@@ -74,6 +77,7 @@ namespace Chess
                                                                    blackBishopUnselected,
                                                                    blackBishopSelected,
                                                                    position);
+                        m_blackBishop.insert(m_board[row][col]);
                     }
                     break;
                 case 3:
@@ -103,6 +107,7 @@ namespace Chess
                                                                    whiteQueenUnselected,
                                                                    whiteQueenSelected,
                                                                    position);
+                        m_whiteQueen.insert(m_board[row][col]);
                     }
                     else
                     {
@@ -110,6 +115,7 @@ namespace Chess
                                                                    blackQueenUnselected,
                                                                    blackQueenSelected,
                                                                    position);
+                        m_blackQueen.insert(m_board[row][col]);
                     }
                     break;
                 default:
