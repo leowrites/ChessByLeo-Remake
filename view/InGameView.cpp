@@ -5,6 +5,7 @@
 #include "InGameView.h"
 
 namespace Chess {
+    bool InGameView::m_isBoardDrawn { false };
     void InGameView::Update(const std::shared_ptr<Game> &game) {
         std::shared_ptr<Piece> currentlySelectedPiece = game->GetCurrentlySelectedPiece();
         // mouse drag behavior
@@ -44,20 +45,30 @@ namespace Chess {
             std::unique_ptr<MoveValidator> validator{
                     std::move(GetValidatorByChessPieceType(currentlySelectedPiece->GetPieceType()))};
             if (validator && validator->validate(oldGridPos, newGridPos, currentlySelectedPiece->GetPieceOwner(),
-                                                 game->GetBoard())) {
+                                                 game->GetBoard()))
+            {
+                Board& board { game->GetBoard() };
+                BoardMatrix& boardMatrix { board.GetBoardMatrix() };
                 currentlySelectedPiece->UpdatePosition(newGridPos->first * SQUARE_PIXEL_SIZE,
                                                        newGridPos->second * SQUARE_PIXEL_SIZE);
-                game->GetBoard().UpdatePiecePositionInBoard(currentlySelectedPiece, newGridPos, oldGridPos);
+                // if old piece exists, make it not alive
+                if (boardMatrix[newGridPos->second][newGridPos->first])
+                    boardMatrix[newGridPos->second][newGridPos->first]->UpdateIsAlive(false);
+                board.UpdatePiecePositionInBoard(currentlySelectedPiece, newGridPos, oldGridPos);
                 game->UpdateCurrentlySelectedPiece(nullptr);
                 // update current player to the other
                 game->UpdateCurrentPlayer(
                         game->GetCurrentPlayer() == PlayerRole::Black ? PlayerRole::White : PlayerRole::Black);
                 // after a move is made, check if the other player is now being checked
                 const std::shared_ptr<Piece> &whiteKing{game->GetBoard().GetWhiteKing()};
-                whiteKing->UpdateInCheck(IsKingInCheck(PlayerRole::White, (Game &) game, game->GetBoard()));
+                whiteKing->UpdateInCheck(IsKingInCheck(PlayerRole::White, board));
 
                 const std::shared_ptr<Piece> &blackKing{game->GetBoard().GetBlackKing()};
-                blackKing->UpdateInCheck(IsKingInCheck(PlayerRole::Black, (Game &) game, game->GetBoard()));
+                blackKing->UpdateInCheck(IsKingInCheck(PlayerRole::Black, board));
+
+                // check if the check put the king in checkmate
+                bool res { IsCheckmate(blackKing, board) };
+                std::cout << res << std::endl;
             } else {
                 // reset to old position
                 currentlySelectedPiece->UpdatePosition(currentlySelectedPiece->GetOldPosition()->x,
@@ -68,12 +79,17 @@ namespace Chess {
     }
 
     void InGameView::Render(int screenWidth, int screenHeight, std::shared_ptr<Game> &game) {
+        // only need to be done once
         Board &board = game->GetBoard();
-        for (uint8_t i{0}; i < 8; ++i) {
-            for (uint8_t j{0}; j < 8; ++j) {
-                // render square
-                DrawSquare(screenWidth, screenHeight, i, j);
+        if (!m_isBoardDrawn)
+        {
+            for (uint8_t i{0}; i < 8; ++i) {
+                for (uint8_t j{0}; j < 8; ++j) {
+                    // render square
+                    DrawSquare(screenWidth, screenHeight, i, j);
+                }
             }
+            m_isBoardDrawn = false;
         }
         for (uint8_t i{0}; i < 8; ++i) {
             for (uint8_t j{0}; j < 8; ++j) {

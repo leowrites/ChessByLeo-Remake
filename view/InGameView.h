@@ -9,6 +9,7 @@
 #include "utility/utility.h"
 #include "utility/move_validators/Validators.h"
 #include "utility/check_validator/CheckValidator.h"
+#include "utility/check_validator/CheckmateValidator.h"
 
 namespace Chess
 {
@@ -18,6 +19,7 @@ namespace Chess
         static void Render(int screenWidth, int screenHeight, std::shared_ptr<Game>& game);
         static void Update(const std::shared_ptr<Game>& game);
     private:
+        static bool m_isBoardDrawn;
         static void DrawSquare(int screenWidth, int screenHeight, uint8_t row, uint8_t col);
         static void DrawPiece(int screenWidth, int screenHeight, Piece *piece, const std::shared_ptr<Game>& game);
     };
