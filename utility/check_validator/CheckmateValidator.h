@@ -4,17 +4,10 @@
 
 #pragma once
 
+#include "utility/utility.h"
+#include "entity/board/Board.h"
+#include "utility/check_validator/CheckValidator.h"
 
-class CheckmateValidator {
-
-    // take in the king position and the board
-    // king is checkmate if
-    // 1. king has nowhere to move
-    // 2. (if is being checked vertically/horizontally/diagonally) no piece can move between
-    // brute force:
-    // 1. king would have 8 squares around it which it can move to, we can check all 8 to see if king can move
-    //      validation: 8 * # of rooks * 8 +
-    // 2. we can first figure out which direction king is being checked from, then we can go through all pieces
-    //      if the piece can be placed in between the attacker and the king
-
-};
+namespace Chess {
+    bool IsCheckmate(const std::shared_ptr<Piece>& king, Board &board);
+}
