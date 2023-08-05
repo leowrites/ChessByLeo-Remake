@@ -38,4 +38,5 @@ namespace Chess
         pawn, rook, bishop, queen, king, knight
     };
     GridPosPtr CalculateGridPosGivenCoord(int x, int y);
+    GridPosPtr CalculateGridPosGivenCoord(std::unique_ptr<Vector2>& windowPosition);
 }
