@@ -15,6 +15,7 @@ namespace Chess {
         const PlayerRole m_pieceOwner;
         // king only
         bool m_isKingInCheck;
+        bool m_isAlive { true };
         std::unique_ptr<Vector2> m_oldPosition;
         std::unique_ptr<Vector2> m_chessPosition;
         std::shared_ptr<Texture> m_chessUnselected;
@@ -49,6 +50,8 @@ namespace Chess {
         void UpdateInCheck(bool isKingInCheck) { m_isKingInCheck = isKingInCheck; };
         void UpdatePosition(float x, float y);
         void UpdateOldPosition(float x, float y);
+        void UpdateIsAlive(bool isAlive) { m_isAlive = isAlive; };
+        bool& GetIsAlive() { return m_isAlive; };
         ~Piece() = default;
     };
 }
