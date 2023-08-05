@@ -46,10 +46,6 @@ namespace Chess
             if (tempDestPiece)
                 tempDestPiece->UpdateIsAlive(false);
             board.UpdatePiecePositionInBoard(kingPiece, newPos, oldPos);
-            // TODO: King cannot detect move to surrounding block is allowed because check validator is based on board.GetPiece
-            // and the piece is not removed from board.GetPiece so check validator will think the piece is still there
-            // we can remove that piece from board.GetPiece() or add a new attribute isAlive(which should be better), and
-            // check validator will check if the piece is alive first, render will only render alive pieces, etc.
             bool canKingMoveToGrid { true };
             if (IsKingInCheck(king->GetPieceOwner(), board))
                 canKingMoveToGrid = false;
