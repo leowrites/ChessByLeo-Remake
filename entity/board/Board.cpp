@@ -13,7 +13,24 @@ namespace Chess
         InitializeChessPieces(PlayerRole::Black);
     }
 
-    void Board::InitializeChessPieces(PlayerRole playerRole) {
+    void Board::InsertPieceIntoPieces(const std::shared_ptr<Piece>& piece)
+    {
+        if (piece->GetPieceOwner() == PlayerRole::White)
+        {
+            if (m_whitePieces.find(piece->GetPieceType()) == m_whitePieces.end())
+                m_whitePieces[piece->GetPieceType()] = std::unordered_set<std::shared_ptr<Piece>> {};
+            m_whitePieces[piece->GetPieceType()].insert(piece);
+        }
+        else
+        {
+            if (m_blackPieces.find(piece->GetPieceType()) == m_blackPieces.end())
+                m_blackPieces[piece->GetPieceType()] = std::unordered_set<std::shared_ptr<Piece>> {};
+            m_blackPieces[piece->GetPieceType()].insert(piece);
+        }
+    }
+
+    void Board::InitializeChessPieces(PlayerRole playerRole)
+    {
         uint8_t row{7};
         int8_t pawnDirection{-1};
         Vector2 position;
@@ -33,7 +50,7 @@ namespace Chess
                                                                    whiteRookUnselected,
                                                                    whiteRookSelected,
                                                                    position);
-                        m_whiteRooks.insert(m_board[row][col]);
+                        InsertPieceIntoPieces(m_board[row][col]);
                     }
                     else
                     {
@@ -41,7 +58,7 @@ namespace Chess
                                                                    blackRookUnselected,
                                                                    blackRookSelected,
                                                                    position);
-                        m_blackRooks.insert(m_board[row][col]); 
+                        InsertPieceIntoPieces(m_board[row][col]);
                     }
                     break;
                 case 1:
@@ -52,6 +69,7 @@ namespace Chess
                                                                    whiteKnightUnselected,
                                                                    whiteKnightSelected,
                                                                    position);
+                        InsertPieceIntoPieces(m_board[row][col]);
                     }
                     else
                     {
@@ -59,6 +77,7 @@ namespace Chess
                                                                    blackKnightUnselected,
                                                                    blackKnightSelected,
                                                                    position);
+                        InsertPieceIntoPieces(m_board[row][col]);
                     }
                     break;
                 case 2:
@@ -69,7 +88,7 @@ namespace Chess
                                                                    whiteBishopUnselected,
                                                                    whiteBishopSelected,
                                                                    position);
-                        m_whiteBishop.insert(m_board[row][col]);
+                        InsertPieceIntoPieces(m_board[row][col]);
                     }
                     else
                     {
@@ -77,7 +96,7 @@ namespace Chess
                                                                    blackBishopUnselected,
                                                                    blackBishopSelected,
                                                                    position);
-                        m_blackBishop.insert(m_board[row][col]);
+                        InsertPieceIntoPieces(m_board[row][col]);
                     }
                     break;
                 case 3:
@@ -107,7 +126,7 @@ namespace Chess
                                                                    whiteQueenUnselected,
                                                                    whiteQueenSelected,
                                                                    position);
-                        m_whiteQueen.insert(m_board[row][col]);
+                        InsertPieceIntoPieces(m_board[row][col]);
                     }
                     else
                     {
@@ -115,7 +134,7 @@ namespace Chess
                                                                    blackQueenUnselected,
                                                                    blackQueenSelected,
                                                                    position);
-                        m_blackQueen.insert(m_board[row][col]);
+                        InsertPieceIntoPieces(m_board[row][col]);
                     }
                     break;
                 default:
@@ -129,6 +148,7 @@ namespace Chess
                                                                                whitePawnUnselected,
                                                                                whitePawnSelected,
                                                                                position);
+                    InsertPieceIntoPieces(m_board[row + pawnDirection][col]);
                 }
                 else
                 {
@@ -136,6 +156,7 @@ namespace Chess
                                                                                blackPawnUnselected,
                                                                                blackPawnSelected,
                                                                                position);
+                    InsertPieceIntoPieces(m_board[row + pawnDirection][col]);
                 }
             }
         }
@@ -144,7 +165,6 @@ namespace Chess
     void Board::UpdatePiecePositionInBoard(std::shared_ptr<Piece>& piece, GridPosPtr& newPos, GridPosPtr& oldPos)
     {
         // use the piece's old position and set that to nullptr
-        m_board[oldPos->second][oldPos->first] = nullptr;
-        m_board[newPos->second][newPos->first] = std::move(piece);
+        m_board[newPos->second][newPos->first] = std::move(m_board[oldPos->second][oldPos->first]);
     }
 }
