@@ -2,8 +2,6 @@
 
 
 namespace Chess {
-    // TODO: bug: when we rely on getting board.GetXXX, if the piece was removed there is currently no way to tell if
-    //  the piece is alive
     bool IsKingInCheckHorizontal(GridPosPtr &kingPos, GridPosPtr& otherPos, Board& board)
     {
         // 1. check if rook is on the same line
@@ -34,9 +32,12 @@ namespace Chess {
         for (auto& queen: queens)
         {
             GridPosPtr pos { CalculateGridPosGivenCoord(queen->GetPosition()->x, queen->GetPosition()->y) };
-            if (IsKingInCheckDiagonal(kingPos, pos, board) || IsKingInCheckVertical(kingPos, pos, board) ||
-                    IsKingInCheckHorizontal(kingPos, pos, board))
+            if (queen->GetIsAlive() && (IsKingInCheckDiagonal(kingPos, pos, board) ||
+            IsKingInCheckVertical(kingPos, pos, board) || IsKingInCheckHorizontal(kingPos, pos, board)))
+            {
+                std::cout << "King is in check by Queen at" << pos << std::endl;
                 return true;
+            }
         }
         return false;
     }
@@ -48,8 +49,11 @@ namespace Chess {
         for (const std::shared_ptr<Piece>& rook: rooks)
         {
             GridPosPtr pos { CalculateGridPosGivenCoord(rook->GetPosition()->x, rook->GetPosition()->y) };
-            if (IsKingInCheckHorizontal(kingPos, pos, board) ||IsKingInCheckVertical(kingPos, pos, board))
+            if (rook->GetIsAlive() && (IsKingInCheckHorizontal(kingPos, pos, board) ||IsKingInCheckVertical(kingPos, pos, board)))
+            {
+                std::cout << "King is in check by Rook at" << pos << std::endl;
                 return true;
+            }
         }
         return false;
     }
@@ -63,13 +67,19 @@ namespace Chess {
         if (kingPos->second + direction >= 0 && kingPos->second + direction < 8) {
             if (leftAttackCol >= 0) {
                 std::shared_ptr<Piece> leftPiece = board.GetBoardMatrix()[kingPos->second + direction][leftAttackCol];
-                if (leftPiece && leftPiece->GetPieceType() == ChessPieceType::pawn && leftPiece->GetPieceOwner() != playerRole)
+                if (leftPiece && leftPiece->GetIsAlive() && leftPiece->GetPieceType() == ChessPieceType::pawn && leftPiece->GetPieceOwner() != playerRole)
+                {
+                    std::cout << "King is in check by pawn" << std::endl;
                     return true;
+                }
             }
             if (rightAttackCol < 8) {
                 std::shared_ptr<Piece> rightPiece = board.GetBoardMatrix()[kingPos->second + direction][rightAttackCol];
-                if (rightPiece && rightPiece->GetPieceType() == ChessPieceType::pawn && rightPiece->GetPieceOwner() != playerRole)
+                if (rightPiece && rightPiece->GetIsAlive() && rightPiece->GetPieceType() == ChessPieceType::pawn && rightPiece->GetPieceOwner() != playerRole)
+                {
+                    std::cout << "King is in check by pawn" << std::endl;
                     return true;
+                }
             }
         }
         return false;
@@ -82,8 +92,11 @@ namespace Chess {
         for (auto& bishop: bishops)
         {
             GridPosPtr pos { CalculateGridPosGivenCoord(bishop->GetPosition()->x, bishop->GetPosition()->y) };
-            if (IsKingInCheckDiagonal(kingPos, pos, board))
+            if (bishop->GetIsAlive() && IsKingInCheckDiagonal(kingPos, pos, board))
+            {
+                std::cout << "King is in check by bishop at " << pos << std::endl;
                 return true;
+            }
         }
         return false;
     }
@@ -109,8 +122,11 @@ namespace Chess {
             && board.GetBoardMatrix()[pos.second][pos.first]->GetPieceType() == ChessPieceType::knight;
         };
         GridPos* gridPos = std::find_if(possiblePos.begin(), possiblePos.end(), isEnemyKnight);
-        if (gridPos != possiblePos.end())
+        if (gridPos != possiblePos.end() && board.GetBoardMatrix()[gridPos->second][gridPos->first]->GetIsAlive())
+        {
+            std::cout << "King is in check by knight at " << gridPos << std::endl;
             return true;
+        }
         return false;
     }
 
