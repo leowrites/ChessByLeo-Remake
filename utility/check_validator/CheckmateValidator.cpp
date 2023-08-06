@@ -10,14 +10,8 @@ namespace Chess
     // king is checkmate if
     // 1. king has nowhere to move
     // 2. (if is being checked vertically/horizontally/diagonally) no piece can move between
-    // brute force:
-    // 1. king would have 8 squares around it which it can move to, we can check all 8 to see if king can move
-    //     run time: 8 * (# of rooks(2) * 8 + # of bishops(2) * 8 + # of queen * 24 (can optimize down to 8 if we get
-    //     direction first) + # of knights(2) * 12 + # of pawns(8) * 2)
-    //
-    // 2. we can first figure out which direction king is being checked from, then we can go through all pieces
-    //      if the piece can be placed in between the attacker and the king
-    bool IsCheckmate(const std::shared_ptr<Piece>& king, Board &board) {
+    // 3. no piece can take the attacker
+    bool CheckmateValidator::IsCheckmate(const std::shared_ptr<Piece>& king, Board &board) {
         GridPosPtr kingPos { std::move(CalculateGridPosGivenCoord(king->GetPosition()) )};
         std::array possibleKingPos {
                 GridPos {kingPos->first - 1, kingPos->second + 1},
@@ -41,31 +35,52 @@ namespace Chess
             GridPosPtr oldPos { std::move(CalculateGridPosGivenCoord(kingPiece->GetPosition())) };
             GridPosPtr newPos { std::make_unique<GridPos>(pos) };
 
-            kingPiece->UpdatePosition(newPos->first * 100, newPos->second * 100);
-            // set piece at that pos to not be alive temporarily
-            if (tempDestPiece)
-                tempDestPiece->UpdateIsAlive(false);
-            board.UpdatePiecePositionInBoard(kingPiece, newPos, oldPos);
+            FakeMoveToNewPos(oldPos, newPos, board);
             bool canKingMoveToGrid { true };
             if (IsKingInCheck(king->GetPieceOwner(), board))
                 canKingMoveToGrid = false;
-            // after the check, move king back to the original place and put the tempDestPiece back
-            kingPiece->UpdatePosition(oldPos->first * 100, oldPos->second * 100);
-            board.UpdatePiecePositionInBoard(kingPiece, oldPos, newPos);
-            board.GetBoardMatrix()[newPos->second][newPos->first] = tempDestPiece;
-            if (tempDestPiece)
-                tempDestPiece->UpdateIsAlive(true);
+            FakeMoveFromNewPos(oldPos, newPos, board);
             return canKingMoveToGrid;
         }};
-        // can any pieces block the check? better if all pieces are in an array/map which we can just loop through
-        // maybe keep track of who has the king in check
-        // if the king is in check by two or more pieces and has no where to move, then it is checkmate
-        // if the king is check by one piece, then we can figure out direction of piece relative to the king
-        // for more efficient checking
-        auto canPieceBlockCheck{[&](const GridPos &pos) {
-
-        }};
-        return std::any_of(possibleKingPos.begin(), possibleKingPos.end(), canKingMove);
+        if (std::any_of(possibleKingPos.begin(), possibleKingPos.end(), canKingMove))
+            return true;
+        // brute force
+        // for all pieces owned by the current player, move it to all possible positions (test capture and blocking)
+        PlayerPieces& pieces { king->GetPieceOwner() == PlayerRole::White ? board.GetWhitePieces() : board.GetBlackPieces() };
+        for (auto& [key, values]: pieces)
+        {
+            // for each piece, try all possible moves
+            // fake move to new pos call isKinginCheck then move back
+            for (auto& value: values)
+            {
+                std::unique_ptr<std::vector<GridPosPtr>> pos { std::move(board.GetAllPossiblePositionsForPiece(value)) };
+            }
+        }
+        return false;
     }
+    void CheckmateValidator::FakeMoveToNewPos(GridPosPtr& oldPos, GridPosPtr& newPos, Board& board)
+    {
+        BoardMatrix& boardMatrix { board.GetBoardMatrix() };
+        if (!boardMatrix[oldPos->second][oldPos->first])
+            return;
+        std::shared_ptr<Piece>& oldPosPiece { boardMatrix[oldPos->second][oldPos->first] };
+        std::shared_ptr<Piece>& newPosPiece { boardMatrix[newPos->second][newPos->first] };
+        oldPosPiece->UpdatePosition(newPos->first * 100, newPos->second * 100);
+        if (newPosPiece)
+            newPosPiece->UpdateIsAlive(false);
+        m_movedPiece = newPosPiece;
+        board.UpdatePiecePositionInBoard(oldPosPiece, newPos, oldPos);
+    };
+    void CheckmateValidator::FakeMoveFromNewPos(GridPosPtr& oldPos, GridPosPtr& newPos, Board& board)
+    {
+        BoardMatrix& boardMatrix { board.GetBoardMatrix() };
+        std::shared_ptr<Piece>& piece { boardMatrix[newPos->second][newPos->first] };
+        // move from oldPos to newPos again
+        piece->UpdatePosition(oldPos->first * 100, oldPos->second * 100);
+        board.UpdatePiecePositionInBoard(piece, oldPos, newPos);
+        board.GetBoardMatrix()[newPos->second][newPos->first] = m_movedPiece;
+        if (m_movedPiece)
+            m_movedPiece->UpdateIsAlive(true);
+    };
 }
 

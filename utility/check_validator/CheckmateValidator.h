@@ -9,5 +9,15 @@
 #include "utility/check_validator/CheckValidator.h"
 
 namespace Chess {
-    bool IsCheckmate(const std::shared_ptr<Piece>& king, Board &board);
+    class CheckmateValidator
+    {
+    private:
+        std::shared_ptr<Piece> m_movedPiece;
+        // functions that can be used to make a temporary move
+        void FakeMoveToNewPos(GridPosPtr& oldPos, GridPosPtr& newPos, Board& board);
+        void FakeMoveFromNewPos(GridPosPtr& oldPos, GridPosPtr& newPos, Board& board);
+    public:
+        CheckmateValidator() = default;
+        bool IsCheckmate(const std::shared_ptr<Piece>& king, Board &board);
+    };
 }
