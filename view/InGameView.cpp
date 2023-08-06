@@ -67,7 +67,8 @@ namespace Chess {
                 blackKing->UpdateInCheck(IsKingInCheck(PlayerRole::Black, board));
 
                 // check if the check put the king in checkmate
-                bool res { IsCheckmate(blackKing, board) };
+                CheckmateValidator checkmateValidator {};
+                bool res { checkmateValidator.IsCheckmate(blackKing, board) };
                 std::cout << res << std::endl;
             } else {
                 // reset to old position
@@ -100,6 +101,7 @@ namespace Chess {
             }
         }
         // render currently selected last
+        // TODO: even better, don't draw these unless piece position is updated (kind of like event driven)
         if (game->GetCurrentlySelectedPiece())
             DrawPiece(screenWidth, screenHeight, game->GetCurrentlySelectedPiece().get(), game);
     }
