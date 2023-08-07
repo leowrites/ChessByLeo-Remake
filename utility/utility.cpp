@@ -18,4 +18,11 @@ namespace Chess
                 y / SQUARE_PIXEL_SIZE % 8
                 );
     }
+    GridPosPtr CalculateGridPosGivenCoord(std::unique_ptr<Vector2>& windowPosition)
+    {
+        return std::make_unique<GridPos>(
+                static_cast<int>(windowPosition->x) / SQUARE_PIXEL_SIZE % 8,
+                static_cast<int>(windowPosition->y) / SQUARE_PIXEL_SIZE % 8
+                );
+    }
 }

@@ -2,38 +2,38 @@
 
 
 namespace Chess {
-    bool IsKingInCheckHorizontal(GridPosPtr &kingPos, Board& board, const std::shared_ptr<Piece>& pieces)
+    bool IsKingInCheckHorizontal(GridPosPtr &kingPos, GridPosPtr& otherPos, Board& board)
     {
-        GridPosPtr rookPos { CalculateGridPosGivenCoord(pieces->GetPosition()->x, pieces->GetPosition()->y) };
         // 1. check if rook is on the same line
         // 2. check if there are pieces between them
-        if (rookPos->first == kingPos->first)
-            return !PieceInBetweenVertical(kingPos, rookPos, board);
+        if (otherPos->first == kingPos->first)
+            // same x so check y
+            return !PieceInBetweenVertical(kingPos, otherPos, board);
         return false;
     }
-    bool IsKingInCheckVertical(GridPosPtr &kingPos, Board& board, const std::shared_ptr<Piece>& pieces)
+    bool IsKingInCheckVertical(GridPosPtr &kingPos, GridPosPtr& otherPos, Board& board)
     {
-        GridPosPtr rookPos { CalculateGridPosGivenCoord(pieces->GetPosition()->x, pieces->GetPosition()->y) };
-        if (rookPos->second == kingPos->second)
-            return !PieceInBetweenHorizontal(kingPos, rookPos, board);
+        if (otherPos->second == kingPos->second)
+            return !PieceInBetweenHorizontal(kingPos, otherPos, board);
         return false;
     }
-    bool IsKingInCheckDiagonal(GridPosPtr &kingPos, Board& board, const std::shared_ptr<Piece>& pieces)
+    bool IsKingInCheckDiagonal(GridPosPtr &kingPos, GridPosPtr& otherPos, Board& board)
     {
-        GridPosPtr bishopPos { CalculateGridPosGivenCoord(pieces->GetPosition()->x, pieces->GetPosition()->y) };
-        int diffX { bishopPos->first - kingPos->first };
-        int diffY { bishopPos->second - kingPos->second};
+        int diffX { otherPos->first - kingPos->first };
+        int diffY { otherPos->second - kingPos->second};
         if (abs(diffX) != abs(diffY))
             return false;
-        return !PieceInBetweenDiagonal(kingPos, bishopPos, board, diffX > 0 ? 1 : -1, diffY > 0 ? 1 : -1);
+        return !PieceInBetweenDiagonal(kingPos, otherPos, board, diffX > 0 ? 1 : -1, diffY > 0 ? 1 : -1);
     }
     bool IsKingInCheckByQueen(PlayerRole playerRole, GridPosPtr &kingPos, Board &board) {
         // note: it's possible to have more than 1 queen
-        const std::unordered_set<std::shared_ptr<Piece>>& queens { playerRole == PlayerRole::White ? board.GetBlackQueen() : board.GetWhiteQueen() };
+        const std::unordered_set<std::shared_ptr<Piece>>& queens { playerRole == PlayerRole::White ? board.GetBlackPieces()[ChessPieceType::queen] :
+                                                                   board.GetWhitePieces()[ChessPieceType::queen]};
         for (auto& queen: queens)
         {
-            if (IsKingInCheckDiagonal(kingPos, board, queen) || IsKingInCheckVertical(kingPos, board, queen) ||
-                    IsKingInCheckHorizontal(kingPos, board, queen))
+            GridPosPtr pos { CalculateGridPosGivenCoord(queen->GetPosition()->x, queen->GetPosition()->y) };
+            if (queen->GetIsAlive() && (IsKingInCheckDiagonal(kingPos, pos, board) ||
+            IsKingInCheckVertical(kingPos, pos, board) || IsKingInCheckHorizontal(kingPos, pos, board)))
                 return true;
         }
         return false;
@@ -41,10 +41,12 @@ namespace Chess {
 
     bool IsKingInCheckByRook(PlayerRole playerRole, GridPosPtr &kingPos, Board &board) {
         const std::unordered_set<std::shared_ptr<Piece>>& rooks {
-            playerRole == PlayerRole::White ? board.GetBlackRooks() : board.GetWhiteRooks()};
+            playerRole == PlayerRole::White ? board.GetBlackPieces()[ChessPieceType::rook] :
+            board.GetWhitePieces()[ChessPieceType::rook]};
         for (const std::shared_ptr<Piece>& rook: rooks)
         {
-            if (IsKingInCheckHorizontal(kingPos, board, rook) ||IsKingInCheckVertical(kingPos, board, rook))
+            GridPosPtr pos { CalculateGridPosGivenCoord(rook->GetPosition()->x, rook->GetPosition()->y) };
+            if (rook->GetIsAlive() && (IsKingInCheckHorizontal(kingPos, pos, board) ||IsKingInCheckVertical(kingPos, pos, board)))
                 return true;
         }
         return false;
@@ -59,12 +61,12 @@ namespace Chess {
         if (kingPos->second + direction >= 0 && kingPos->second + direction < 8) {
             if (leftAttackCol >= 0) {
                 std::shared_ptr<Piece> leftPiece = board.GetBoardMatrix()[kingPos->second + direction][leftAttackCol];
-                if (leftPiece && leftPiece->GetPieceType() == ChessPieceType::pawn && leftPiece->GetPieceOwner() != playerRole)
+                if (leftPiece && leftPiece->GetIsAlive() && leftPiece->GetPieceType() == ChessPieceType::pawn && leftPiece->GetPieceOwner() != playerRole)
                     return true;
             }
             if (rightAttackCol < 8) {
                 std::shared_ptr<Piece> rightPiece = board.GetBoardMatrix()[kingPos->second + direction][rightAttackCol];
-                if (rightPiece && rightPiece->GetPieceType() == ChessPieceType::pawn && rightPiece->GetPieceOwner() != playerRole)
+                if (rightPiece && rightPiece->GetIsAlive() && rightPiece->GetPieceType() == ChessPieceType::pawn && rightPiece->GetPieceOwner() != playerRole)
                     return true;
             }
         }
@@ -73,10 +75,12 @@ namespace Chess {
 
     bool IsKingInCheckByBishop(PlayerRole playerRole, GridPosPtr &kingPos, Board &board) {
         const std::unordered_set<std::shared_ptr<Piece>>& bishops {
-                playerRole == PlayerRole::White ? board.GetBlackBishop() : board.GetWhiteBishop()};
+                playerRole == PlayerRole::White ? board.GetBlackPieces()[ChessPieceType::bishop] :
+                board.GetWhitePieces()[ChessPieceType::bishop]};
         for (auto& bishop: bishops)
         {
-            if (IsKingInCheckDiagonal(kingPos, board, bishop))
+            GridPosPtr pos { CalculateGridPosGivenCoord(bishop->GetPosition()->x, bishop->GetPosition()->y) };
+            if (bishop->GetIsAlive() && IsKingInCheckDiagonal(kingPos, pos, board))
                 return true;
         }
         return false;
@@ -103,12 +107,12 @@ namespace Chess {
             && board.GetBoardMatrix()[pos.second][pos.first]->GetPieceType() == ChessPieceType::knight;
         };
         GridPos* gridPos = std::find_if(possiblePos.begin(), possiblePos.end(), isEnemyKnight);
-        if (gridPos != possiblePos.end())
+        if (gridPos != possiblePos.end() && board.GetBoardMatrix()[gridPos->second][gridPos->first]->GetIsAlive())
             return true;
         return false;
     }
 
-    bool IsKingInCheck(PlayerRole playerRole, Game &game, Board &board) {
+    bool IsKingInCheck(PlayerRole playerRole, Board &board) {
         // Check if the king for given PlayerRole is in check
         // first find the king, this may be optimized if we track where king is on the board at all times, but for now
         // will use find_if
@@ -118,7 +122,6 @@ namespace Chess {
                IsKingInCheckByKnight(playerRole, kingPos, board) ||
                IsKingInCheckByBishop(playerRole, kingPos, board) ||
                IsKingInCheckByPawn(playerRole, kingPos, board) ||
-               IsKingInCheckByQueen(playerRole, kingPos, board) ||
                 IsKingInCheckByRook(playerRole, kingPos, board);
     }
 }

@@ -5,7 +5,8 @@
 #include "InGameView.h"
 
 namespace Chess {
-    void InGameView::Update(const std::shared_ptr<Game> &game) {
+    bool InGameView::gameOver{ false };
+    void InGameView::Update(const std::shared_ptr<Game> &game, GameState& currGameState) {
         std::shared_ptr<Piece> currentlySelectedPiece = game->GetCurrentlySelectedPiece();
         // mouse drag behavior
         if (currentlySelectedPiece != nullptr && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
@@ -17,10 +18,6 @@ namespace Chess {
             Vector2 mousePosition = GetMousePosition();
             GridPosPtr gridPos{std::move(CalculateGridPosGivenCoord(mousePosition.x, mousePosition.y))};
             // update selected piece
-            // if clicked on is not null, update old position
-//            if (game->GetBoard().GetBoardMatrix().at(gridPos->second).at(gridPos->first) &&
-//                game->GetBoard().GetBoardMatrix().at(gridPos->second).at(gridPos->first)->GetPieceOwner() ==
-//                game->GetCurrentPlayer()) {
                 game->UpdateCurrentlySelectedPiece(
                         game->GetBoard().GetBoardMatrix().at(gridPos->second).at(gridPos->first));
                 // only current player can be selected, check which player the piece belongs to
@@ -44,20 +41,36 @@ namespace Chess {
             std::unique_ptr<MoveValidator> validator{
                     std::move(GetValidatorByChessPieceType(currentlySelectedPiece->GetPieceType()))};
             if (validator && validator->validate(oldGridPos, newGridPos, currentlySelectedPiece->GetPieceOwner(),
-                                                 game->GetBoard())) {
+                                                 game->GetBoard()))
+            {
+                Board& board { game->GetBoard() };
+                BoardMatrix& boardMatrix { board.GetBoardMatrix() };
                 currentlySelectedPiece->UpdatePosition(newGridPos->first * SQUARE_PIXEL_SIZE,
                                                        newGridPos->second * SQUARE_PIXEL_SIZE);
-                game->GetBoard().UpdatePiecePositionInBoard(currentlySelectedPiece, newGridPos, oldGridPos);
+                // if old piece exists, make it not alive
+                if (boardMatrix[newGridPos->second][newGridPos->first])
+                    boardMatrix[newGridPos->second][newGridPos->first]->UpdateIsAlive(false);
+                board.UpdatePiecePositionInBoard(currentlySelectedPiece, newGridPos, oldGridPos);
                 game->UpdateCurrentlySelectedPiece(nullptr);
                 // update current player to the other
                 game->UpdateCurrentPlayer(
                         game->GetCurrentPlayer() == PlayerRole::Black ? PlayerRole::White : PlayerRole::Black);
                 // after a move is made, check if the other player is now being checked
                 const std::shared_ptr<Piece> &whiteKing{game->GetBoard().GetWhiteKing()};
-                whiteKing->UpdateInCheck(IsKingInCheck(PlayerRole::White, (Game &) game, game->GetBoard()));
+                whiteKing->UpdateInCheck(IsKingInCheck(PlayerRole::White, board));
 
                 const std::shared_ptr<Piece> &blackKing{game->GetBoard().GetBlackKing()};
-                blackKing->UpdateInCheck(IsKingInCheck(PlayerRole::Black, (Game &) game, game->GetBoard()));
+                blackKing->UpdateInCheck(IsKingInCheck(PlayerRole::Black, board));
+
+                // check if the check put the king in checkmate
+                CheckmateValidator checkmateValidator {};
+                if (checkmateValidator.IsCheckmate(blackKing, board) ||
+                    checkmateValidator.IsCheckmate(whiteKing, board))
+                {
+                    std::cout << "Game over" << std::endl;
+                    // do something
+                    gameOver = true;
+                }
             } else {
                 // reset to old position
                 currentlySelectedPiece->UpdatePosition(currentlySelectedPiece->GetOldPosition()->x,
@@ -68,7 +81,9 @@ namespace Chess {
     }
 
     void InGameView::Render(int screenWidth, int screenHeight, std::shared_ptr<Game> &game) {
+        // only need to be done once
         Board &board = game->GetBoard();
+
         for (uint8_t i{0}; i < 8; ++i) {
             for (uint8_t j{0}; j < 8; ++j) {
                 // render square
@@ -84,8 +99,11 @@ namespace Chess {
             }
         }
         // render currently selected last
+        // TODO: even better, don't draw these unless piece position is updated (kind of like event driven)
         if (game->GetCurrentlySelectedPiece())
             DrawPiece(screenWidth, screenHeight, game->GetCurrentlySelectedPiece().get(), game);
+        if (InGameView::gameOver)
+            DrawWinText();
     }
 
     void InGameView::DrawSquare(int screenWidth, int screenHeight, uint8_t row, uint8_t col) {
@@ -121,5 +139,17 @@ namespace Chess {
                 DrawTextureEx(*(piece->GetUnselectedTexture()), *piece->GetPosition(), 0.0f, 0.45f, WHITE);
             }
         }
+    }
+
+    void InGameView::DrawWinText(int screenWidth, int screenHeight)
+    {
+        const char* title { "Game Over!"};
+        const int titleWidth {MeasureText(title, TITLE_TEXT_FONT_SIZE) };
+        const int alignedX { (screenWidth - titleWidth) / 2 };
+        DrawText(title,
+                 alignedX,
+                 (screenHeight - TITLE_TEXT_FONT_SIZE) / 3,
+                 TITLE_TEXT_FONT_SIZE,
+                 MAROON);
     }
 }

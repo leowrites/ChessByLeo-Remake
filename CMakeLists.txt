@@ -78,6 +78,7 @@ add_executable(${PROJECT_NAME}
         utility/move_validators/RookMoveValidator.cpp
         utility/check_validator/CheckValidator.h
         utility/check_validator/CheckValidator.cpp
-        )
+        utility/check_validator/CheckmateValidator.h
+        utility/check_validator/CheckmateValidator.cpp)
 
 target_link_libraries(${PROJECT_NAME}  raylib)

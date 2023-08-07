@@ -45,7 +45,7 @@ int main()
                 Chess::GameConfigView::Update(mousePosition, gameConfiguration, currGameState);
                 break;
             case Chess::GameState::InGame:
-                Chess::InGameView::Update(gamePtr);
+                Chess::InGameView::Update(gamePtr, currGameState);
                 Chess::InGameView::Render(screenWidth, screenHeight, gamePtr);
                 break;
             case Chess::GameState::Paused:

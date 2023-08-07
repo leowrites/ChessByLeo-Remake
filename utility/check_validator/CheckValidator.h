@@ -16,13 +16,13 @@ namespace Chess
     // 2. after current player makes a move, use it to check if the other player's king is in check
     // 3. if current player is being checked by the other player, check if the move wish to be performed will
     //      remove the check status for the current player
-    bool IsKingInCheck(PlayerRole playerRole, Game& game, Board& board);
+    bool IsKingInCheck(PlayerRole playerRole, Board& board);
     bool IsKingInCheckByPawn(PlayerRole playerRole, GridPosPtr &kingPos, Board &board);
     bool IsKingInCheckByRook(PlayerRole playerRole, GridPosPtr &kingPos, Board &board);
     bool IsKingInCheckByQueen(PlayerRole playerRole, GridPosPtr &kingPos, Board &board);
     bool IsKingInCheckByBishop(PlayerRole playerRole, GridPosPtr &kingPos, Board &board);
     bool IsKingInCheckByKnight(PlayerRole playerRole, GridPosPtr &kingPos, Board& board);
-    bool IsKingInCheckHorizontal(GridPosPtr &kingPos, Board& board, const std::shared_ptr<Piece>& pieces);
-    bool IsKingInCheckVertical(GridPosPtr &kingPos, Board& board, const std::shared_ptr<Piece>& pieces);
-    bool IsKingInCheckDiagonal(GridPosPtr &kingPos, Board& board, const std::shared_ptr<Piece>& pieces);
+    bool IsKingInCheckHorizontal(GridPosPtr &kingPos, GridPosPtr& otherPos, Board& board);
+    bool IsKingInCheckVertical(GridPosPtr &kingPos, GridPosPtr& otherPos, Board& board);
+    bool IsKingInCheckDiagonal(GridPosPtr &kingPos, GridPosPtr& otherPos, Board& board);
 }
