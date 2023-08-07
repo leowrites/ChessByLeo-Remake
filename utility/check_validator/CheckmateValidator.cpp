@@ -43,7 +43,7 @@ namespace Chess
             return canKingMoveToGrid;
         }};
         if (std::any_of(possibleKingPos.begin(), possibleKingPos.end(), canKingMove))
-            return true;
+            return false;
         // brute force
         // for all pieces owned by the current player, move it to all possible positions (test capture and blocking)
         PlayerPieces& pieces { king->GetPieceOwner() == PlayerRole::White ? board.GetWhitePieces() : board.GetBlackPieces() };
@@ -197,7 +197,7 @@ namespace Chess
             }
         }
         // bottom left
-        for (int i = 1, j = 1; startX - i >= 0 && startX + j < 8; ++i, ++j) {
+        for (int i = 1, j = 1; startX - i >= 0 && startY + j < 8; ++i, ++j) {
             currX = startX - i ;
             currY = startY + j ;
             if (board[currY][currX] == nullptr) {
