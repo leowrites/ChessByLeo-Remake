@@ -23,8 +23,6 @@ namespace Chess
         std::map<ChessPieceType, std::unordered_set<std::shared_ptr<Piece>>> m_whitePieces;
         std::map<ChessPieceType, std::unordered_set<std::shared_ptr<Piece>>> m_blackPieces;
         void InitializeChessPieces(PlayerRole playerRole);
-        void LoopAndAddGridPosToVector(int startX, int startY, int startCountX, int startCountY, int endX, int endY,
-                                       int incX, int incY, std::unique_ptr<std::vector<GridPosPtr>>& positions, PlayerRole pieceOwner);
     public:
         Board();
         BoardMatrix& GetBoardMatrix() { return m_board; };
@@ -33,9 +31,6 @@ namespace Chess
         PlayerPieces& GetWhitePieces() { return m_whitePieces; };
         PlayerPieces& GetBlackPieces() { return m_blackPieces; };
         void InsertPieceIntoPieces(const std::shared_ptr<Piece>& piece);
-        std::unique_ptr<std::vector<GridPosPtr>> GetAllPossiblePositionsForPiece(const std::shared_ptr<Piece> &piece);
-        std::unique_ptr<std::vector<GridPosPtr>> GetAllPossibleHorizontalAndVerticalPositions(const std::shared_ptr<Piece> &piece);
-        std::unique_ptr<std::vector<GridPosPtr>> GetAllPossibleDiagonalPositions(const std::shared_ptr<Piece> &piece);
         void UpdatePiecePositionInBoard(std::shared_ptr<Piece>& piece, GridPosPtr& newPos, GridPosPtr& oldPos);
     };
 }
