@@ -53,7 +53,8 @@ namespace Chess
             // fake move to new pos call isKinginCheck then move back
             for (auto& value: values)
             {
-                std::cout << value->GetPieceName() << std::endl;
+                if (!value->GetIsAlive())
+                    continue;
                 std::unique_ptr<std::vector<GridPosPtr>> possiblePos { std::move(GetAllPossiblePositionsForPiece(value, board.GetBoardMatrix())) };
                 if (possiblePos)
                 {
@@ -61,6 +62,7 @@ namespace Chess
                     {
                         GridPosPtr startPos { std::move(CalculateGridPosGivenCoord(value->GetPosition())) };
                         FakeMoveToNewPos(startPos, tempEndPos, board);
+                        std::cout << board << std::endl;
                         bool isKingInCheck { IsKingInCheck(king->GetPieceOwner(), board) };
                         FakeMoveFromNewPos(startPos, tempEndPos, board);
                         if (!isKingInCheck)
@@ -69,6 +71,7 @@ namespace Chess
                 }
             }
         }
+        std::cout << board << std::endl;
         std::cout << "Checkmate!" << std::endl;
         return true;
     }
