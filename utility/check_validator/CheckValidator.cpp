@@ -34,10 +34,7 @@ namespace Chess {
             GridPosPtr pos { CalculateGridPosGivenCoord(queen->GetPosition()->x, queen->GetPosition()->y) };
             if (queen->GetIsAlive() && (IsKingInCheckDiagonal(kingPos, pos, board) ||
             IsKingInCheckVertical(kingPos, pos, board) || IsKingInCheckHorizontal(kingPos, pos, board)))
-            {
-                std::cout << "King is in check by Queen at" << pos << std::endl;
                 return true;
-            }
         }
         return false;
     }
@@ -50,10 +47,7 @@ namespace Chess {
         {
             GridPosPtr pos { CalculateGridPosGivenCoord(rook->GetPosition()->x, rook->GetPosition()->y) };
             if (rook->GetIsAlive() && (IsKingInCheckHorizontal(kingPos, pos, board) ||IsKingInCheckVertical(kingPos, pos, board)))
-            {
-                std::cout << "King is in check by Rook at" << pos << std::endl;
                 return true;
-            }
         }
         return false;
     }
@@ -68,18 +62,12 @@ namespace Chess {
             if (leftAttackCol >= 0) {
                 std::shared_ptr<Piece> leftPiece = board.GetBoardMatrix()[kingPos->second + direction][leftAttackCol];
                 if (leftPiece && leftPiece->GetIsAlive() && leftPiece->GetPieceType() == ChessPieceType::pawn && leftPiece->GetPieceOwner() != playerRole)
-                {
-                    std::cout << "King is in check by pawn" << std::endl;
                     return true;
-                }
             }
             if (rightAttackCol < 8) {
                 std::shared_ptr<Piece> rightPiece = board.GetBoardMatrix()[kingPos->second + direction][rightAttackCol];
                 if (rightPiece && rightPiece->GetIsAlive() && rightPiece->GetPieceType() == ChessPieceType::pawn && rightPiece->GetPieceOwner() != playerRole)
-                {
-                    std::cout << "King is in check by pawn" << std::endl;
                     return true;
-                }
             }
         }
         return false;
@@ -93,10 +81,7 @@ namespace Chess {
         {
             GridPosPtr pos { CalculateGridPosGivenCoord(bishop->GetPosition()->x, bishop->GetPosition()->y) };
             if (bishop->GetIsAlive() && IsKingInCheckDiagonal(kingPos, pos, board))
-            {
-                std::cout << "King is in check by bishop at " << pos << std::endl;
                 return true;
-            }
         }
         return false;
     }
@@ -123,10 +108,7 @@ namespace Chess {
         };
         GridPos* gridPos = std::find_if(possiblePos.begin(), possiblePos.end(), isEnemyKnight);
         if (gridPos != possiblePos.end() && board.GetBoardMatrix()[gridPos->second][gridPos->first]->GetIsAlive())
-        {
-            std::cout << "King is in check by knight at " << gridPos << std::endl;
             return true;
-        }
         return false;
     }
 

@@ -247,8 +247,11 @@ namespace Chess
                 };
                 for (auto& pos: possiblePos)
                 {
-                    if (0 <= pos.first and pos.first < 8 and 0<= pos.second and pos.second < 8)
-                        posPtr->push_back(std::make_unique<GridPos>(pos.first, pos.second));
+                    if (0 <= pos.first && pos.first < 8 && 0<= pos.second && pos.second < 8)
+                    {
+                        if (!board[pos.second][pos.first] || board[pos.second][pos.first]->GetPieceOwner() != piece->GetPieceOwner())
+                            posPtr->push_back(std::make_unique<GridPos>(pos.first, pos.second));
+                    }
                 }
                 return posPtr;
             }
