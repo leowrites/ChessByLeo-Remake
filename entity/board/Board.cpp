@@ -49,14 +49,14 @@ namespace Chess
                                                                     whiteRookUnselected,
                                                                     whiteRookSelected,
                                                                     position,
-                                                                    "Pawn");
+                                                                    "Rook");
                         InsertPieceIntoPieces(m_board[row][col]);
                     } else {
                         m_board[row][col] = std::make_shared<Piece>(ChessPieceType::rook, playerRole,
                                                                     blackRookUnselected,
                                                                     blackRookSelected,
                                                                     position,
-                                                                    "Pawn");
+                                                                    "Rook");
                         InsertPieceIntoPieces(m_board[row][col]);
                     }
                     break;
@@ -160,5 +160,34 @@ namespace Chess
     {
         // use the piece's old position and set that to nullptr
         m_board[newPos->second][newPos->first] = std::move(m_board[oldPos->second][oldPos->first]);
+    }
+    ostream &operator<<(ostream &out, Board &board)
+    {
+        uint8_t counter { 0 };
+        for (auto& row: board.GetBoardMatrix())
+        {
+            for (auto& col: row)
+            {
+                if (!col)
+                {
+                    out << "[]";
+                }
+                else
+                {
+                    const std::string_view& playerName { col->GetPieceOwner() == PlayerRole::White ? "White" : "Black" };
+                    out << "[" << playerName << col->GetPieceName() << "]";
+                }
+                if (counter == 7)
+                {
+                    counter = 0;       
+                    out << std::endl;
+                }
+                else
+                {
+                    counter += 1;
+                }
+            }
+        }
+        return out;
     }
 }

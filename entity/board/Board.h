@@ -32,5 +32,6 @@ namespace Chess
         PlayerPieces& GetBlackPieces() { return m_blackPieces; };
         void InsertPieceIntoPieces(const std::shared_ptr<Piece>& piece);
         void UpdatePiecePositionInBoard(std::shared_ptr<Piece>& piece, GridPosPtr& newPos, GridPosPtr& oldPos);
+        friend ostream& operator<<(ostream& out, Board& board);
     };
 }
