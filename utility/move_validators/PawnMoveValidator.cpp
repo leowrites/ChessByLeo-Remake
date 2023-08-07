@@ -6,6 +6,26 @@
 
 namespace Chess
 {
+    std::unique_ptr<std::vector<GridPosPtr>> PawnMoveValidator::GetPossibleMoves(GridPosPtr& start, PlayerRole playerRole, BoardMatrix& board)
+    {
+        std::unique_ptr<std::vector<GridPosPtr>> possibleMove { std::make_unique<std::vector<GridPosPtr>>() };
+        uint8_t& x { start->first };
+        uint8_t& y { start->second };
+        bool isPlayerWhite { playerRole == PlayerRole::White };
+        int direction { isPlayerWhite ? -1 : 1 };
+        if (!board[x][y + direction])
+            possibleMove->push_back(std::make_unique<GridPos>(x, y + direction));
+        if (!board[x][y + direction] && !board[x][y + direction * 2]) {
+            if ((isPlayerWhite && y + direction * 2 >= 0 && start->second == 6)
+                || (!isPlayerWhite && y + direction * 2 < 8 && start->second == 1))
+                possibleMove->push_back(std::make_unique<GridPos>(x, y + direction * 2));
+        }
+        if (0 <= x - 1 and x - 1 < 8 and 0 <= y + direction and y + direction < 8)
+            possibleMove->push_back(std::make_unique<GridPos>(x - 1, y + direction));
+        if (0 <= x + 1 and x + 1 < 8 and 0 <= y + direction and y + direction < 8)
+            possibleMove->push_back(std::make_unique<GridPos>(x + 1, y + direction));
+        return possibleMove;
+    }
     bool PawnMoveValidator::AbovePieceExists(GridPosPtr& start, GridPosPtr &end, Board &board)
     {
         const int diffY { end->second - start->second };
