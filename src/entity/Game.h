@@ -3,10 +3,10 @@
 //
 
 #pragma once
-#include "board/Board.h"
+#include "src/entity/board/Board.h"
 #include "GameConfiguration.h"
 #include "iostream"
-#include "player/Player.h"
+#include "src/entity/player/Player.h"
 #include "raylib.h"
 #include <ctime>
 

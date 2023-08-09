@@ -5,9 +5,9 @@
 #pragma once
 
 #include <array>
-#include "entity/piece/Piece.h"
-#include "texture/asset.h"
-#include "utility/utility.h"
+#include "src/entity/piece/Piece.h"
+#include "assets/asset.h"
+#include "src/utility/utility.h"
 #include "unordered_set"
 #include <map>
 

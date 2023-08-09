@@ -5,11 +5,11 @@
 #pragma once
 
 #include <iostream>
-#include "entity/Game.h"
-#include "utility/utility.h"
-#include "utility/move_validators/Validators.h"
-#include "utility/check_validator/CheckValidator.h"
-#include "utility/check_validator/CheckmateValidator.h"
+#include "src/entity/Game.h"
+#include "src/utility/utility.h"
+#include "src/utility/move_validators/Validators.h"
+#include "src/utility/check_validator/CheckValidator.h"
+#include "src/utility/check_validator/CheckmateValidator.h"
 
 namespace Chess
 {

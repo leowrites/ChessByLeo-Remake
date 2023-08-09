@@ -5,8 +5,8 @@
 #pragma once
 
 #include "raylib.h"
-#include "entity/Game.h"
-#include "utility/utility.h"
+#include "src/entity/Game.h"
+#include "src/utility/utility.h"
 
 namespace Chess
 {

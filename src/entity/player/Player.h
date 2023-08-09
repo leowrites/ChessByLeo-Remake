@@ -5,8 +5,8 @@
 #pragma once
 
 #include <iostream>
-#include "utility/utility.h"
-#include "../piece/Piece.h"
+#include "src/utility/utility.h"
+#include "src/entity/piece/Piece.h"
 
 namespace Chess
 {

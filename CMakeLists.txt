@@ -26,59 +26,15 @@ if (NOT raylib_FOUND)
 endif()
 
 
+add_definitions( -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} )
+
 include_directories(${CMAKE_CURRENT_LIST_DIR})
 include_directories(${LIB_PATH}/raygui/src)
 
-add_executable(${PROJECT_NAME}
-        main.cpp
-        entity/player/Player.h
-        entity/player/Player.cpp
-        entity/piece/Piece.h
-        entity/piece/Piece.cpp
-        entity/Sprite.h
-        entity/Sprite.cpp
-        entity/Game.h
-        entity/GameConfiguration.h
-        entity/GameConfiguration.cpp
-        entity/Game.cpp
-        entity/board/Board.h
-        entity/board/Board.cpp
-        entity/Renderable.h
-        entity/Renderable.cpp
-        system/RenderSystem.h
-        system/SystemManager.h
-        system/SystemManager.cpp
-        system/RenderSystem.cpp
-        system/PlayerMouseDragSystem.h
-        view/HomeView.h
-        view/HomeView.cpp
-        utility/utility.h
-        utility/utility.cpp
-        view/LoadingView.h
-        view/LoadingView.cpp
-        view/GameConfigView.h
-        view/GameConfigView.cpp
-        view/InGameView.h
-        view/InGameView.cpp
-        texture/asset.h
-        utility/move_validators/MoveValidator.h
-        utility/move_validators/PawnMoveValidator.cpp
-        utility/move_validators/Validators.cpp 
-        utility/move_validators/KnightMoveValidator.h
-        utility/move_validators/KnightMoveValidator.cpp 
-        utility/move_validators/RookMoveValidator.h 
-        utility/move_validators/QueenMoveValidator.h 
-        utility/move_validators/QueenMoveValidator.cpp 
-        utility/move_validators/BishopMoveValidator.h 
-        utility/move_validators/BishopMoveValidator.cpp 
-        utility/move_validators/KingMoveValidator.h 
-        utility/move_validators/KingMoveValidator.cpp 
-        utility/move_validators/ValidatorHelper.h 
-        utility/move_validators/ValidatorHelper.cpp 
-        utility/move_validators/RookMoveValidator.cpp
-        utility/check_validator/CheckValidator.h
-        utility/check_validator/CheckValidator.cpp
-        utility/check_validator/CheckmateValidator.h
-        utility/check_validator/CheckmateValidator.cpp)
+file(GLOB_RECURSE PROJECT_SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp")
+add_executable(${PROJECT_NAME})
+target_sources(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCES})
 
+target_compile_definitions(${PROJECT_NAME} PUBLIC ASSETS_PATH="${CMAKE_CURRENT_SOURCE_DIR}/assets/")
+message(${CMAKE_CURRENT_SOURCE_DIR}/assets/)
 target_link_libraries(${PROJECT_NAME}  raylib)

@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <array>
-#include <entity/Renderable.h>
+#include "src/entity/Renderable.h"
 #include "SystemManager.h"
 
 namespace Chess
