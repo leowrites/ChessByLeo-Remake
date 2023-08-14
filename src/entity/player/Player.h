@@ -5,6 +5,7 @@
 #pragma once
 
 #include <iostream>
+#include <array>
 #include "src/utility/utility.h"
 #include "src/entity/piece/Piece.h"
 

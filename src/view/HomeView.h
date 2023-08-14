@@ -7,6 +7,7 @@
 #include "raylib.h"
 #include "src/entity/Game.h"
 #include "src/utility/utility.h"
+#include <unordered_map>
 
 namespace Chess
 {
