@@ -4,9 +4,9 @@
 
 #pragma once
 #include <iostream>
-#include <raylib.h>
+#include "cmake-build-debug/_deps/raylib-src/src/raylib.h"
 #include <string_view>
-#include "utility/utility.h"
+#include "src/utility/utility.h"
 
 namespace Chess {
     class Piece {

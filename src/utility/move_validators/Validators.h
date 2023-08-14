@@ -11,7 +11,7 @@
 #include "QueenMoveValidator.h"
 #include "BishopMoveValidator.h"
 #include "MoveValidator.h"
-#include "utility/utility.h"
+#include "src/utility/utility.h"
 #include <iostream>
 
 

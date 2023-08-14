@@ -5,7 +5,7 @@
 #pragma once
 
 #include <memory>
-#include "entity/Game.h"
+#include "src/entity/Game.h"
 
 namespace Chess
 {

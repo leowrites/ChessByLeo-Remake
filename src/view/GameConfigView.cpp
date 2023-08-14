@@ -6,7 +6,7 @@
 #include <sstream>
 #include "raygui.h"
 #include "GameConfigView.h"
-#include "utility/utility.h"
+#include "src/utility/utility.h"
 
 namespace Chess
 {

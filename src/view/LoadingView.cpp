@@ -3,7 +3,7 @@
 //
 
 #include "LoadingView.h"
-#include "utility/utility.h"
+#include "src/utility/utility.h"
 
 namespace Chess
 {

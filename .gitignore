@@ -43,3 +43,4 @@ Debug
 CPackConfig.cmake
 CPackSourceConfig.cmake
 .DS_Store
+include

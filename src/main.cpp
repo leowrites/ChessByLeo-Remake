@@ -21,6 +21,7 @@ int main()
     std::shared_ptr<Chess::Game> gamePtr { nullptr };
     InitWindow(screenWidth, screenHeight, "Chess By Leo V2");
     SetTargetFPS(60);
+    std::cout << ASSETS_PATH << std::endl;
 
     while (!WindowShouldClose())
     {

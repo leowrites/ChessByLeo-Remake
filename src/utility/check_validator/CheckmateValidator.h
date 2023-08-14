@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include "utility/utility.h"
-#include "entity/board/Board.h"
-#include "utility/check_validator/CheckValidator.h"
-#include "utility/move_validators/PawnMoveValidator.h"
+#include "src/utility/utility.h"
+#include "src/entity/board/Board.h"
+#include "CheckValidator.h"
+#include "src/utility/move_validators/PawnMoveValidator.h"
 namespace Chess {
     class CheckmateValidator
     {

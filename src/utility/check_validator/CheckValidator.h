@@ -1,13 +1,13 @@
 #pragma once
 
 #include <iostream>
-#include "utility/utility.h"
-#include "entity/Game.h"
-#include "entity/board/Board.h"
+#include "src/utility/utility.h"
+#include "src/entity/Game.h"
+#include "src/entity/board/Board.h"
 #include "array"
 #include "algorithm"
 #include "unordered_set"
-#include "utility/move_validators/ValidatorHelper.h"
+#include "src/utility/move_validators/ValidatorHelper.h"
 
 namespace Chess
 {

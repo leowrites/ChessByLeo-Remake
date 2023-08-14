@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "utility/utility.h"
-#include "entity/board/Board.h"
+#include "src/utility/utility.h"
+#include "src/entity/board/Board.h"
 
 // Interface for a move validator
 namespace Chess

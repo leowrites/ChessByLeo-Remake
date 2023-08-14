@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "entity/GameConfiguration.h"
-#include "entity/Game.h"
+#include "src/entity/GameConfiguration.h"
+#include "src/entity/Game.h"
 
 namespace Chess
 {

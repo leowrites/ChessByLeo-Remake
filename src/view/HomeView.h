@@ -5,8 +5,9 @@
 #pragma once
 
 #include "raylib.h"
-#include "entity/Game.h"
-#include "utility/utility.h"
+#include "src/entity/Game.h"
+#include "src/utility/utility.h"
+#include <unordered_map>
 
 namespace Chess
 {
