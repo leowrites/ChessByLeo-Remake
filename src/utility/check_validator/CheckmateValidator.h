@@ -8,6 +8,7 @@
 #include "src/entity/board/Board.h"
 #include "CheckValidator.h"
 #include "src/utility/move_validators/PawnMoveValidator.h"
+#include "src/utility/move_validators/KnightMoveValidator.h"
 namespace Chess {
     class CheckmateValidator
     {

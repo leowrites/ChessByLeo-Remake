@@ -8,6 +8,8 @@
 #include "algorithm"
 #include "unordered_set"
 #include "src/utility/move_validators/ValidatorHelper.h"
+#include "src/utility/move_validators/Validators.h"
+#include "src/utility/move_validators/MoveValidator.h"
 
 namespace Chess
 {

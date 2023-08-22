@@ -15,6 +15,7 @@ namespace Chess
     public:
         KnightMoveValidator() = default;
         bool validate(GridPosPtr& start, GridPosPtr& end, PlayerRole playerRole, Board& board) override;
+        static std::unique_ptr<std::vector<GridPosPtr>> GetPossibleMoves(GridPosPtr& start, PlayerRole playerRole, BoardMatrix& board);
         ~KnightMoveValidator() override = default;
     };
 }

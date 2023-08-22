@@ -234,31 +234,11 @@ namespace Chess
             }
             case ChessPieceType::knight:
             {
-                std::unique_ptr<std::vector<GridPosPtr>> posPtr { std::make_unique<std::vector<GridPosPtr>>() };
-                std::array possiblePos {
-                        GridPos {gridPosPtr->first - 1, gridPosPtr->second + 2},
-                        GridPos {gridPosPtr->first + 1, gridPosPtr->second + 2},
-                        GridPos {gridPosPtr->first - 1, gridPosPtr->second - 2},
-                        GridPos {gridPosPtr->first + 1, gridPosPtr->second - 2},
-                        GridPos {gridPosPtr->first - 2, gridPosPtr->second + 1},
-                        GridPos {gridPosPtr->first + 2, gridPosPtr->second + 1},
-                        GridPos {gridPosPtr->first - 2, gridPosPtr->second - 1},
-                        GridPos {gridPosPtr->first + 2, gridPosPtr->second - 1}
-                };
-                for (auto& pos: possiblePos)
-                {
-                    if (0 <= pos.first && pos.first < 8 && 0<= pos.second && pos.second < 8)
-                    {
-                        if (!board[pos.second][pos.first] || board[pos.second][pos.first]->GetPieceOwner() != piece->GetPieceOwner())
-                            posPtr->push_back(std::make_unique<GridPos>(pos.first, pos.second));
-                    }
-                }
-                return posPtr;
+                return KnightMoveValidator::GetPossibleMoves(gridPosPtr, piece->GetPieceOwner(), board);
             }
             case ChessPieceType::pawn:
             {
-                GridPosPtr gridPos { std::move(CalculateGridPosGivenCoord(piece->GetPosition())) };
-                return PawnMoveValidator::GetPossibleMoves(gridPos, piece->GetPieceOwner(), board);
+                return PawnMoveValidator::GetPossibleMoves(gridPosPtr, piece->GetPieceOwner(), board);
             }
             case ChessPieceType::king:
                 return nullptr;

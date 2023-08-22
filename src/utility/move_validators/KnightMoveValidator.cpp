@@ -6,11 +6,9 @@
 
 namespace Chess
 {
-    bool KnightMoveValidator::validate(Chess::GridPosPtr &start, Chess::GridPosPtr &end, Chess::PlayerRole playerRole,
-                                       Chess::Board &board)
+    std::unique_ptr<std::vector<GridPosPtr>> KnightMoveValidator::GetPossibleMoves(GridPosPtr& start, PlayerRole playerRole, BoardMatrix& board)
     {
-        // knight can go up 2 left 1, up 2 right 1, ...
-        // if end is any of them, return true
+        // return valid moves
         std::array possiblePos {
                 GridPos {start->first - 1, start->second + 2},
                 GridPos {start->first + 1, start->second + 2},
@@ -21,18 +19,29 @@ namespace Chess
                 GridPos {start->first - 2, start->second - 1},
                 GridPos {start->first + 2, start->second - 1}
         };
-        GridPos endPos { *end.get() };
-        auto isSameGrid = [endPos](GridPos& pos)
+        std::unique_ptr<std::vector<GridPosPtr>> validPos { std::make_unique<std::vector<GridPosPtr>>() };
+        for (auto& pos: possiblePos)
         {
-            return endPos.first == pos.first && endPos.second == pos.second;
+            // 1. pos need to be inside the board
+            if (pos.first < 0 || pos.first > 7 || pos.second < 0 || pos.second > 7)
+                continue;
+            // 2. pos need to be empty or enemy (alive or dead)
+            if (!board[pos.second][pos.first] || board[pos.second][pos.first]->GetPieceOwner() != playerRole)
+                validPos->push_back(std::make_unique<GridPos>(pos.first, pos.second));
+        }
+        return validPos;
+
+    }
+    bool KnightMoveValidator::validate(GridPosPtr &start, GridPosPtr &end, PlayerRole playerRole, Board &board)
+    {
+        std::unique_ptr<std::vector<GridPosPtr>> validPos { std::move(GetPossibleMoves(start, playerRole, board.GetBoardMatrix())) };
+        // check if end is in validPos
+        auto isSameGrid = [&](GridPosPtr& pos)
+        {
+            return end->first == pos->first && end->second == pos->second;
         };
-        GridPos* pos = std::find_if(std::begin(possiblePos), std::end(possiblePos), isSameGrid);
-        if (pos == possiblePos.end())
-            return false;
-        if (!board.GetBoardMatrix()[pos->second][pos->first])
-            return true;
-        if (board.GetBoardMatrix()[pos->second][pos->first]->GetPieceOwner() != playerRole)
-            return true;
-        return false;
+
+        auto pos = std::find_if(std::begin(*validPos), std::end(*validPos), isSameGrid);
+        return pos != validPos->end();
     }
 }
